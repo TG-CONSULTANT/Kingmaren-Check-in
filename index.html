@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0F2A43">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="ลงเวลา">
+<meta name="robots" content="noindex">
+<title>คิงมารีน ลงเวลาทำงาน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@500;600&family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0F2A43;--navy2:#1C4264;--navy-line:#4B6680;--ink:#14202B;--ink2:#2B3641;--muted:#4A5561;
+  --bg:#F4F1EA;--line:#E0D9CC;--line2:#D6CFC2;--field:#CFC7B8;--soft:#F8F6F1;
+  --green:#1E7A46;--green-d:#145332;--green-bg:#E3F1E8;--green-ink:#14532D;
+  --orange:#C2410C;--orange-d:#8F300A;
+  --amber:#B45309;--amber-bg:#FDF0DD;--amber-ink:#8A3F07;
+  --red:#B42318;--red-bg:#FDECEA;--red-ink:#7A1A12;
+  --blue:#0F4C81;--lock:#D5D0C7;--lock-ink:#4F493F;
+  --display:'Prompt','Noto Sans Thai',Tahoma,sans-serif;
+  --body:'Sarabun','Noto Sans Thai','Leelawadee UI',Tahoma,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);-webkit-text-size-adjust:100%}
+body[data-view="camera"]{background:#0B1520}
+body[data-view="done"]{background:var(--green-bg)}
+button,input,select,textarea{font-family:inherit;color:inherit}
+button{cursor:pointer}
+button:disabled{cursor:not-allowed}
+:focus-visible{outline:3px solid #F2B43C;outline-offset:2px}
+[hidden]{display:none!important}
+svg{flex-shrink:0}
+.view{min-height:100vh;min-height:100dvh}
+.phone{max-width:480px;margin:0 auto;display:flex;flex-direction:column;background:var(--bg)}
+
+/* ข้อความ */
+.h1{margin:0;font-family:var(--display);font-size:32px;font-weight:600;color:var(--navy);line-height:1.3}
+.lead{margin:4px 0 0;font-size:20px;color:var(--muted)}
+.center-text{text-align:center}
+.msg-err{margin:0;min-height:28px;font-size:20px;font-weight:600;color:var(--red);text-align:center}
+
+/* หัวหน้าจอพนักงาน */
+.bar{background:var(--navy);color:#fff;padding:24px;display:flex;gap:14px}
+.bar-pin{align-items:center;padding:28px 24px 24px}
+.bar-home{flex-direction:column;padding:22px 24px 26px}
+.logo{background:#fff;color:var(--navy);display:flex;align-items:center;justify-content:center;border-radius:14px;flex-shrink:0}
+.logo.lg{width:52px;height:52px}
+.logo.sm{width:38px;height:38px;border-radius:10px}
+.brand{font-family:var(--display);font-size:24px;font-weight:600}
+.brand-sm{font-family:var(--display);font-size:20px;font-weight:600}
+.sub{font-size:18px;color:#C9D6E3}
+.row{display:flex;align-items:center}
+.between{justify-content:space-between}
+.gap8{gap:8px}.gap10{gap:10px}
+.btn-ghost{background:transparent;color:#fff;font-size:17px;padding:6px 14px;border:2px solid var(--navy-line);border-radius:12px;min-height:44px}
+.hello{font-size:20px;color:#C9D6E3}
+.name{font-family:var(--display);font-size:34px;font-weight:600;line-height:1.25;word-break:break-word}
+.clock{font-family:var(--display);font-size:62px;font-weight:600;line-height:1}
+.clock small{font-size:26px;font-weight:500}
+
+/* ใส่รหัส */
+.pin-main{padding:24px;display:flex;flex-direction:column;gap:16px}
+.dots{display:flex;justify-content:center;gap:22px;min-height:22px}
+.dot{width:22px;height:22px;border-radius:50%;border:3px solid var(--navy)}
+.dot.on{background:var(--navy)}
+.keypad{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.key{height:84px;border-radius:18px;border:2px solid var(--line2);background:#fff;font-size:38px;font-weight:600;color:var(--ink);touch-action:manipulation;user-select:none}
+.key:active{background:#EFE9DF;transform:translateY(1px)}
+.key.del{background:#EFE9DF;font-size:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.key.ok{background:var(--green);border-color:var(--green);color:#fff;font-size:28px;font-weight:700}
+.check-lg{display:flex;align-items:center;gap:14px;font-size:22px;line-height:1.35;padding:6px 4px}
+.check-lg input{width:32px;height:32px;flex-shrink:0;accent-color:var(--green)}
+
+/* หน้าหลัก */
+.home-main{padding:20px 20px 28px;display:flex;flex-direction:column;gap:16px}
+.gps-card{border:2px solid;border-radius:18px;padding:14px 18px;display:flex;align-items:center;gap:14px}
+.gps-card.ok{background:var(--green-bg);border-color:var(--green);color:var(--green-ink)}
+.gps-card.bad{background:var(--red-bg);border-color:var(--red);color:var(--red-ink)}
+.gps-card.wait{background:#fff;border-color:var(--line2);color:var(--ink)}
+.gps-ic{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0}
+.ok .gps-ic{background:var(--green)}
+.bad .gps-ic{background:var(--red)}
+.wait .gps-ic{background:var(--muted)}
+.gps-t{font-size:24px;font-weight:700;line-height:1.3}
+.gps-s{font-size:19px}
+.big-btn{min-height:210px;border:none;border-radius:28px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:16px;color:#fff;touch-action:manipulation;width:100%}
+.big-btn.go-in{background:var(--green);box-shadow:0 6px 0 var(--green-d)}
+.big-btn.go-out{background:var(--orange);box-shadow:0 6px 0 var(--orange-d)}
+.big-btn:not(:disabled):active{transform:translateY(4px);box-shadow:0 2px 0 rgba(0,0,0,.25)}
+.big-btn.locked{background:var(--lock);color:var(--lock-ink);min-height:150px}
+.bb-t{font-family:var(--display);font-size:44px;font-weight:600;line-height:1.1}
+.locked .bb-t{font-size:32px}
+.bb-s{font-size:20px;opacity:.92}
+.help{margin:0;font-size:21px;line-height:1.45;text-align:center}
+.btn-blue-lg{min-height:76px;border:none;border-radius:20px;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;gap:10px;font-size:26px;font-weight:600;width:100%}
+.today-card{margin-top:6px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px 20px}
+.today-t{font-size:20px;font-weight:700;color:var(--muted);margin-bottom:6px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.lbl{font-size:18px;color:var(--muted)}
+.tval{font-family:var(--display);font-size:30px;font-weight:600}
+.tstat{font-size:17px;color:var(--amber-ink);font-weight:600}
+
+/* กล้อง */
+.dark{background:#0B1520;color:#fff}
+.cam-top{padding:20px 20px 14px;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.white{color:#fff}
+.light{color:#C9D6E3}
+.btn-back{min-height:50px;padding:0 16px 0 10px;border:2px solid var(--navy-line);border-radius:14px;background:transparent;color:#fff;display:flex;align-items:center;gap:4px;font-size:20px}
+.cam-box{position:relative;margin:0 20px;flex:1;min-height:360px;max-height:520px;border-radius:24px;overflow:hidden;background:#1D2B38}
+.cam-box video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
+.cam-oval{position:absolute;left:50%;top:54%;width:62%;aspect-ratio:3/4;max-height:78%;transform:translate(-50%,-50%);border:4px dashed #fff;border-radius:50%;pointer-events:none;box-shadow:0 0 0 999px rgba(11,21,32,.35)}
+.cam-chip{position:absolute;top:14px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;border-radius:999px;padding:6px 14px;font-size:17px;font-weight:600;white-space:nowrap;color:#fff}
+.cam-chip.ok{background:var(--green)}
+.cam-chip.bad{background:var(--red)}
+.cam-chip.wait{background:#4A5561}
+.cam-err{position:absolute;inset:0;background:#1D2B38;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px;text-align:center;font-size:21px;line-height:1.45}
+.cam-err p{margin:0}
+.btn-white{min-height:64px;border:none;border-radius:16px;background:#fff;color:var(--navy);padding:0 22px;font-size:22px;font-weight:600}
+.cam-bottom{padding:18px 20px 26px;display:flex;flex-direction:column;align-items:center;gap:8px}
+.shutter{width:96px;height:96px;border-radius:50%;background:#fff;border:7px solid var(--green);outline:4px solid #fff;touch-action:manipulation}
+.shutter:disabled{opacity:.4}
+.shutter:not(:disabled):active{transform:scale(.94)}
+.shutter-l{margin-top:6px;font-size:22px;font-weight:600}
+.note{font-size:17px;color:#9FB0C0;text-align:center}
+
+/* ยืนยันรูป */
+.pad{padding:28px 24px;gap:22px}
+.photo-box{border-radius:24px;overflow:hidden;background:#D9D2C5;display:flex;align-items:center;justify-content:center}
+.photo-box img{display:block;width:100%;max-height:56vh;object-fit:contain}
+.col{display:flex;flex-direction:column}
+.gap14{gap:14px}
+.btn-green-xl{min-height:96px;border:none;border-radius:22px;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;gap:12px;box-shadow:0 5px 0 var(--green-d);font-family:var(--display);font-size:28px;font-weight:600;padding:8px 16px}
+.btn-green-xl:disabled{opacity:.6}
+.btn-outline-lg{min-height:72px;border:3px solid var(--navy);border-radius:20px;background:#fff;color:var(--navy);display:flex;align-items:center;justify-content:center;gap:10px;font-size:26px;font-weight:600}
+
+/* บันทึกสำเร็จ */
+.done-view{background:var(--green-bg);padding:32px 24px;align-items:center;justify-content:center;gap:18px;text-align:center}
+.done-circle{width:150px;height:150px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center}
+.done-t{margin:0;font-family:var(--display);font-size:36px;font-weight:600;color:var(--green-ink)}
+.done-time{background:#fff;border-radius:22px;padding:16px 36px}
+.done-clock{font-family:var(--display);font-size:60px;font-weight:600;color:var(--navy);line-height:1.15}
+.done-status{font-size:22px;font-weight:700;color:var(--green-ink)}
+.done-status.warn{background:var(--amber-bg);color:var(--amber-ink);padding:6px 16px;border-radius:12px}
+.done-name{font-size:26px;font-weight:600}
+.done-noti{display:flex;align-items:center;gap:8px;font-size:20px;color:#1F4D33}
+.btn-navy-xl{margin-top:8px;align-self:stretch;min-height:80px;border:none;border-radius:20px;background:var(--navy);color:#fff;font-size:28px;font-weight:600}
+.done-count{font-size:17px;color:#2F5A40}
+
+/* กำลังโหลด / แจ้งเตือน / กล่องข้อความ */
+.boot{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;font-size:22px;color:var(--navy)}
+.busy{position:fixed;inset:0;background:rgba(15,42,67,.55);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:50;color:#fff;font-size:24px;font-weight:600;text-align:center;padding:24px}
+.spinner{width:64px;height:64px;border-radius:50%;border:7px solid rgba(255,255,255,.3);border-top-color:#fff;animation:spin .9s linear infinite}
+.spinner.dark-s{border-color:rgba(15,42,67,.2);border-top-color:var(--navy)}
+.spinner.sm{width:44px;height:44px;border-width:5px;border-color:rgba(79,73,63,.3);border-top-color:var(--lock-ink)}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spinner{animation-duration:3s}}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);width:max-content;max-width:calc(100% - 32px);background:var(--ink);color:#fff;padding:14px 20px;border-radius:14px;font-size:19px;z-index:60;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+.toast.err{background:var(--red)}
+.toast.ok{background:var(--green)}
+.modal{position:fixed;inset:0;background:rgba(15,42,67,.6);display:flex;align-items:center;justify-content:center;padding:16px;z-index:40}
+.modal-box{background:#fff;border-radius:20px;width:100%;max-width:520px;max-height:92vh;overflow:auto;padding:22px;display:flex;flex-direction:column;gap:14px}
+.modal-t{margin:0;font-family:var(--display);font-size:24px;font-weight:600;color:var(--navy)}
+.modal-b{font-size:19px;line-height:1.5}
+.modal-b p{margin:0}
+.modal-b img{display:block;width:100%;border-radius:14px}
+.modal-f{display:flex;gap:10px;flex-wrap:wrap}
+.modal-f > *{min-height:52px;flex:1 1 140px}
+
+/* ผู้บริหาร */
+.admin{display:flex;background:var(--bg)}
+.side{width:260px;flex-shrink:0;background:var(--navy);color:#fff;padding:28px 18px;display:flex;flex-direction:column;gap:6px;position:sticky;top:0;height:100vh;height:100dvh}
+.side-brand{display:flex;align-items:center;gap:12px;padding:0 6px 26px}
+.side-nav{display:flex;flex-direction:column;gap:6px}
+.nav-btn{min-height:52px;border:none;border-radius:12px;padding:0 14px;display:flex;align-items:center;gap:12px;font-size:19px;background:transparent;color:#C9D6E3;text-align:left}
+.nav-btn:hover{background:#163756;color:#fff}
+.nav-btn.active{background:var(--navy2);color:#fff;font-weight:600}
+.nav-sep{height:1px;background:#2C4A66;margin:10px 6px}
+.side-foot{margin-top:auto;border-top:1px solid #2C4A66;padding:16px 6px 0;display:flex;flex-direction:column;gap:8px;font-size:17px}
+.link-btn{background:none;border:none;padding:0;color:inherit;text-decoration:underline;font-size:inherit;text-align:left}
+.side .link-btn{color:#C9D6E3;font-size:16px}
+.adm-main{flex:1;min-width:0;padding:32px 40px 48px}
+.page{display:flex;flex-direction:column;gap:24px}
+.page-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.adm-h1{margin:0;font-family:var(--display);font-size:34px;font-weight:600;color:var(--navy)}
+.adm-h2{margin:0;font-family:var(--display);font-size:22px;font-weight:600;color:var(--navy)}
+.adm-sub{font-size:18px;color:var(--muted)}
+.head-tools{display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap}
+.fld{display:flex;flex-direction:column;gap:4px;font-size:16px;color:var(--muted)}
+.fld input,.fld select,.fld textarea{height:50px;border:2px solid var(--field);border-radius:12px;padding:0 12px;font-size:18px;background:#fff;color:var(--ink);width:100%}
+.fld textarea{height:auto;padding:10px 12px;resize:vertical;line-height:1.5}
+.grow{flex:1 1 160px}
+.grow2{flex:2 1 220px}
+.w150{width:150px}
+.btn-outline,.btn-navy,.btn-green,.btn-red,.btn-sm{min-height:48px;border-radius:12px;padding:0 16px;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:17px;font-weight:600;text-decoration:none;white-space:nowrap}
+.btn-outline{border:2px solid var(--navy);background:#fff;color:var(--navy)}
+.btn-outline.blue{border-color:var(--blue);color:var(--blue)}
+.btn-navy{border:2px solid var(--navy);background:var(--navy);color:#fff}
+.btn-green{border:2px solid var(--green);background:var(--green);color:#fff}
+.btn-red{border:2px solid var(--red);background:var(--red);color:#fff}
+.btn-sm{min-height:40px;padding:0 12px;font-size:15px;font-weight:500;border:2px solid var(--line2);background:#fff;color:var(--ink)}
+.btn-sm:disabled,.btn-outline:disabled,.btn-navy:disabled,.btn-green:disabled{opacity:.45}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.stat,.card{background:#fff;border:1px solid var(--line);border-radius:18px}
+.stat{padding:18px 20px;display:flex;flex-direction:column;gap:2px}
+.stat-l{font-size:18px;color:var(--muted)}
+.stat-v{font-family:var(--display);font-size:44px;font-weight:600;color:var(--navy);line-height:1.2}
+.stat-v.green{color:var(--green)}
+.stat-v.amber{color:var(--amber)}
+.stat-v.red{color:var(--red)}
+.stat-s{font-size:15px;color:var(--muted)}
+.table-card{overflow:hidden}
+.tbl-tools{padding:14px 20px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;border-bottom:1px solid #EEE8DD}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{min-height:44px;border:2px solid var(--line2);border-radius:999px;padding:0 18px;background:#fff;font-size:17px}
+.chip.active{background:var(--navy);border-color:var(--navy);color:#fff;font-weight:600}
+.search{display:flex;align-items:center;gap:8px;height:48px;border:2px solid var(--field);border-radius:12px;padding:0 12px;width:280px;max-width:100%;background:#fff;color:var(--muted)}
+.search input{border:none;outline:none;font-size:17px;flex:1;min-width:0;background:transparent;color:var(--ink)}
+.tbl-wrap{overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse;font-size:18px;min-width:780px}
+.tbl th{background:var(--soft);text-align:left;font-size:16px;font-weight:600;color:var(--muted);padding:12px 16px;white-space:nowrap}
+.tbl td{padding:8px 16px;border-top:1px solid #EEE8DD;height:64px;vertical-align:middle}
+.b,.tbl .b{font-weight:600}
+.tbl tr.off td{color:#80868C}
+.tbl-cap{padding:14px 20px;font-size:17px;color:var(--muted);border-bottom:1px solid #EEE8DD}
+.empty-row{text-align:center;color:var(--muted);height:96px!important}
+.thumb{width:50px;height:50px;border:none;padding:0;border-radius:10px;background:#E4DED3;color:#8A8172;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.thumb img:not([src]){display:none}
+.pill{display:inline-block;border-radius:999px;padding:4px 14px;font-size:16px;font-weight:600;white-space:nowrap}
+.pill.ok,.pill.in{background:var(--green-bg);color:var(--green-ink)}
+.pill.late{background:var(--amber-bg);color:var(--amber-ink)}
+.pill.absent{background:var(--red-bg);color:var(--red-ink)}
+.pill.out{background:#FCE9DE;color:var(--orange-d)}
+.small-note{display:block;font-size:14px;color:var(--amber-ink);font-weight:600}
+.acts{display:flex;gap:8px;flex-wrap:wrap}
+.switch{display:flex;align-items:center;gap:8px;font-size:16px}
+.switch input{width:24px;height:24px;accent-color:var(--green)}
+.form-card,.filter-card{padding:18px 20px;display:flex;flex-direction:column;gap:12px}
+.filter-card{flex-direction:row;align-items:flex-end;flex-wrap:wrap}
+.form-row{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap}
+.set-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;align-items:start}
+.set-col{display:flex;flex-direction:column;gap:24px}
+.set-card{padding:20px;display:flex;flex-direction:column;gap:14px}
+.map-box{height:240px;border-radius:14px;background:#DDE5DC;overflow:hidden;display:flex;align-items:center;justify-content:center;color:#3E4A3F;font-size:16px;text-align:center;padding:12px}
+.map-box.has-map{padding:0}
+.map-box iframe{border:0;width:100%;height:100%}
+.grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.chk{display:flex;align-items:center;gap:10px;font-size:18px;color:var(--ink);flex-wrap:wrap}
+.chk input[type=checkbox]{width:24px;height:24px;accent-color:var(--green);flex-shrink:0}
+.chk .inl{width:84px;height:42px;border:2px solid var(--field);border-radius:10px;padding:0 8px;font-size:17px}
+.days{display:flex;gap:8px;flex-wrap:wrap}
+.day{display:flex;align-items:center;gap:6px;border:2px solid var(--line2);border-radius:10px;padding:6px 10px;font-size:16px;color:var(--ink)}
+.day input{width:20px;height:20px;accent-color:var(--green)}
+.hint{font-size:15px;color:var(--muted);margin:0;line-height:1.5}
+.save-bar{display:flex;justify-content:flex-end;gap:12px}
+.chat-item{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.inline-err{color:var(--red);font-weight:600;min-height:24px;margin:0}
+
+@media (max-width:900px){
+  .admin{flex-direction:column}
+  .side{width:auto;height:auto;position:static;padding:14px 12px;gap:10px}
+  .side-brand{padding:0 4px}
+  .side-nav{flex-direction:row;overflow-x:auto;gap:6px}
+  .nav-btn{white-space:nowrap;min-height:46px;font-size:17px}
+  .nav-sep{display:none}
+  .side-foot{flex-direction:row;justify-content:space-between;align-items:center;border-top:none;padding:0 4px;margin-top:0}
+  .adm-main{padding:20px 14px 40px}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .set-grid{grid-template-columns:1fr}
+  .search{width:100%}
+  .adm-h1{font-size:28px}
+}
+</style>
+</head>
+<body data-view="loading">
+
+<!-- กำลังเปิด -->
+<section id="v-loading" class="view boot">
+  <div class="spinner dark-s"></div>
+  <div>กำลังเปิดระบบ...</div>
+</section>
+
+<!-- ใส่รหัส -->
+<section id="v-pin" class="view phone" hidden>
+  <header class="bar bar-pin">
+    <div class="logo lg"><i data-ic="anchor" data-s="30"></i></div>
+    <div>
+      <div class="brand">คิงมารีน</div>
+      <div class="sub">ระบบลงเวลาทำงาน</div>
+    </div>
+  </header>
+  <main class="pin-main">
+    <div class="center-text">
+      <h1 class="h1">ใส่รหัสของคุณ</h1>
+      <p class="lead">รหัสตัวเลข 4 ตัว</p>
+    </div>
+    <div id="pinDots" class="dots" role="status"></div>
+    <p id="pinMsg" class="msg-err" role="alert"></p>
+    <div class="keypad" id="keypad">
+      <button type="button" class="key" data-k="1">1</button>
+      <button type="button" class="key" data-k="2">2</button>
+      <button type="button" class="key" data-k="3">3</button>
+      <button type="button" class="key" data-k="4">4</button>
+      <button type="button" class="key" data-k="5">5</button>
+      <button type="button" class="key" data-k="6">6</button>
+      <button type="button" class="key" data-k="7">7</button>
+      <button type="button" class="key" data-k="8">8</button>
+      <button type="button" class="key" data-k="9">9</button>
+      <button type="button" class="key del" data-k="del" aria-label="ลบตัวเลข"><i data-ic="backspace" data-s="30"></i><span>ลบ</span></button>
+      <button type="button" class="key" data-k="0">0</button>
+      <button type="button" class="key ok" data-k="ok">ตกลง</button>
+    </div>
+    <label class="check-lg">
+      <input type="checkbox" id="pinRemember" checked>
+      <span>จำเครื่องนี้ไว้ ครั้งหน้าไม่ต้องใส่รหัส</span>
+    </label>
+  </main>
+</section>
+
+<!-- หน้าหลักพนักงาน -->
+<section id="v-home" class="view phone" hidden>
+  <header class="bar bar-home">
+    <div class="row between">
+      <div class="row gap10">
+        <div class="logo sm"><i data-ic="anchor" data-s="22"></i></div>
+        <span class="brand-sm">คิงมารีน</span>
+      </div>
+      <div class="row gap8">
+        <button type="button" class="btn-ghost" id="homeAdminBtn" hidden>หน้าผู้บริหาร</button>
+        <button type="button" class="btn-ghost" id="logoutBtn">ออกจากระบบ</button>
+      </div>
+    </div>
+    <div>
+      <div class="hello">สวัสดี</div>
+      <div class="name" id="homeName"></div>
+    </div>
+    <div>
+      <div class="hello" id="homeDate"></div>
+      <div class="clock"><span id="homeClock">--:--</span> <small>น.</small></div>
+    </div>
+  </header>
+  <main class="home-main">
+    <div id="gpsCard" class="gps-card wait" role="status">
+      <div class="gps-ic" id="gpsIc"></div>
+      <div>
+        <div class="gps-t" id="gpsTitle">กำลังหาตำแหน่ง...</div>
+        <div class="gps-s" id="gpsSub">กรุณารอสักครู่</div>
+      </div>
+    </div>
+    <button type="button" id="bigBtn" class="big-btn locked" disabled></button>
+    <p id="homeHelp" class="help" hidden></p>
+    <button type="button" id="retryGps" class="btn-blue-lg" hidden><i data-ic="refresh" data-s="30"></i><span>ลองหาตำแหน่งใหม่</span></button>
+    <div class="today-card">
+      <div class="today-t">วันนี้</div>
+      <div class="grid2">
+        <div>
+          <div class="lbl">เข้างาน</div>
+          <div class="tval" id="tIn">--:--</div>
+          <div class="tstat" id="tInStat"></div>
+        </div>
+        <div>
+          <div class="lbl">ออกงาน</div>
+          <div class="tval" id="tOut">--:--</div>
+        </div>
+      </div>
+    </div>
+  </main>
+</section>
+
+<!-- ถ่ายรูป -->
+<section id="v-camera" class="view phone dark" hidden>
+  <div class="cam-top">
+    <button type="button" class="btn-back" id="camCancel"><i data-ic="back" data-s="26"></i><span>ยกเลิก</span></button>
+    <h1 class="h1 white" id="camTitle">ถ่ายรูปหน้าตัวเอง</h1>
+    <p class="lead light">ให้หน้าอยู่ในกรอบ แล้วกดปุ่มกลม</p>
+  </div>
+  <div class="cam-box">
+    <video id="camVideo" autoplay playsinline muted></video>
+    <div class="cam-oval"></div>
+    <div class="cam-chip wait" id="camChip"></div>
+    <div class="cam-err" id="camErr" hidden>
+      <p id="camErrText"></p>
+      <button type="button" class="btn-white" id="camRetry">ลองเปิดกล้องอีกครั้ง</button>
+    </div>
+  </div>
+  <div class="cam-bottom">
+    <button type="button" class="shutter" id="shutter" aria-label="กดถ่ายรูป" disabled></button>
+    <span class="shutter-l">กดถ่ายรูป</span>
+    <span class="note">ถ่ายจากกล้องได้อย่างเดียว เลือกรูปเก่าไม่ได้</span>
+  </div>
+  <canvas id="camCanvas" hidden></canvas>
+</section>
+
+<!-- ยืนยันรูป -->
+<section id="v-confirm" class="view phone pad" hidden>
+  <div>
+    <h1 class="h1">รูปนี้ใช้ได้ไหม?</h1>
+    <p class="lead">ถ้าเห็นหน้าชัด กดปุ่มสีเขียว</p>
+  </div>
+  <div class="photo-box"><img id="confirmImg" alt="รูปที่เพิ่งถ่าย"></div>
+  <p id="confirmMsg" class="msg-err" role="alert"></p>
+  <div class="col gap14">
+    <button type="button" class="btn-green-xl" id="useBtn"><i data-ic="check" data-s="40" data-w="2.6"></i><span id="useLbl">ใช้รูปนี้ บันทึก</span></button>
+    <button type="button" class="btn-outline-lg" id="retakeBtn"><i data-ic="refresh" data-s="30"></i><span>ถ่ายใหม่</span></button>
+  </div>
+</section>
+
+<!-- บันทึกสำเร็จ -->
+<section id="v-done" class="view phone done-view" hidden>
+  <div class="done-circle"><i data-ic="check" data-s="88" data-w="2.6"></i></div>
+  <h1 class="done-t" id="doneTitle">บันทึกเข้างานแล้ว</h1>
+  <div class="done-time">
+    <div class="lbl">เวลา</div>
+    <div class="done-clock" id="doneTime">--:--</div>
+  </div>
+  <div class="done-status" id="doneStatus"></div>
+  <div class="done-name" id="doneName"></div>
+  <div class="done-noti" id="doneNoti"></div>
+  <button type="button" class="btn-navy-xl" id="doneBack">กลับหน้าแรก</button>
+  <span class="done-count" id="doneCount"></span>
+</section>
+
+<!-- ผู้บริหาร -->
+<section id="v-admin" class="view admin" hidden>
+  <nav class="side">
+    <div class="side-brand">
+      <div class="logo" style="width:44px;height:44px;border-radius:12px"><i data-ic="anchor" data-s="26"></i></div>
+      <div>
+        <div class="brand" style="font-size:22px">คิงมารีน</div>
+        <div class="sub" style="font-size:15px">ผู้บริหาร</div>
+      </div>
+    </div>
+    <div class="side-nav">
+      <button type="button" class="nav-btn" data-page="dash"><i data-ic="grid" data-s="22"></i><span>ภาพรวมวันนี้</span></button>
+      <button type="button" class="nav-btn" data-page="hist"><i data-ic="clock" data-s="22"></i><span>ประวัติการลงเวลา</span></button>
+      <button type="button" class="nav-btn" data-page="emps"><i data-ic="users" data-s="22"></i><span>พนักงาน</span></button>
+      <button type="button" class="nav-btn" data-page="set"><i data-ic="sliders" data-s="22"></i><span>ตั้งค่า</span></button>
+      <div class="nav-sep"></div>
+      <button type="button" class="nav-btn" id="myCheckin"><i data-ic="camera" data-s="22"></i><span>ลงเวลาของฉัน</span></button>
+    </div>
+    <div class="side-foot">
+      <span id="adminName"></span>
+      <button type="button" class="link-btn" id="adminLogout">ออกจากระบบ</button>
+    </div>
+  </nav>
+
+  <main class="adm-main">
+    <!-- ภาพรวม -->
+    <div class="page" id="p-dash">
+      <div class="page-head">
+        <div>
+          <h1 class="adm-h1" id="dashTitle">ภาพรวมวันนี้</h1>
+          <div class="adm-sub" id="dashSub"></div>
+        </div>
+        <div class="head-tools">
+          <label class="fld"><span>ดูวันที่</span><input type="date" id="dashDate"></label>
+          <button type="button" class="btn-outline" id="dashRefresh"><i data-ic="refresh" data-s="20"></i><span>โหลดใหม่</span></button>
+          <button type="button" class="btn-outline" id="dashExport"><i data-ic="download" data-s="20"></i><span>ส่งออกเป็นชีต</span></button>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat"><span class="stat-l">พนักงานทั้งหมด</span><span class="stat-v" id="stTotal">–</span><span class="stat-s">คน</span></div>
+        <div class="stat"><span class="stat-l">มาแล้ว</span><span class="stat-v green" id="stIn">–</span><span class="stat-s">รวมคนมาสาย</span></div>
+        <div class="stat"><span class="stat-l">มาสาย</span><span class="stat-v amber" id="stLate">–</span><span class="stat-s" id="stLateSub"></span></div>
+        <div class="stat"><span class="stat-l" id="stAbsL">ยังไม่มา</span><span class="stat-v red" id="stAbs">–</span><span class="stat-s">ยังไม่ลงเวลาเข้า</span></div>
+      </div>
+      <section class="card table-card">
+        <div class="tbl-tools">
+          <div class="chips" id="dashChips"></div>
+          <label class="search"><i data-ic="search" data-s="20"></i><input type="search" id="dashSearch" placeholder="ค้นหาชื่อพนักงาน" aria-label="ค้นหาชื่อพนักงาน"></label>
+        </div>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead><tr><th>รูป</th><th>ชื่อ-สกุล</th><th>แผนก</th><th>เข้างาน</th><th>ออกงาน</th><th>ระยะจากโรงงาน</th><th>สถานะ</th></tr></thead>
+            <tbody id="dashBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- ประวัติ -->
+    <div class="page" id="p-hist" hidden>
+      <div class="page-head">
+        <div>
+          <h1 class="adm-h1">ประวัติการลงเวลา</h1>
+          <div class="adm-sub">เลือกช่วงวันที่และพนักงาน</div>
+        </div>
+      </div>
+      <section class="card filter-card">
+        <label class="fld"><span>ตั้งแต่วันที่</span><input type="date" id="hFrom"></label>
+        <label class="fld"><span>ถึงวันที่</span><input type="date" id="hTo"></label>
+        <label class="fld grow"><span>พนักงาน</span><select id="hEmp"><option value="">ทุกคน</option></select></label>
+        <button type="button" class="btn-navy" id="hSearch"><i data-ic="search" data-s="20"></i><span>ค้นหา</span></button>
+        <button type="button" class="btn-outline" id="hExport"><i data-ic="download" data-s="20"></i><span>ส่งออกเป็นชีต</span></button>
+      </section>
+      <section class="card table-card">
+        <div class="tbl-cap" id="hCap"></div>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead><tr><th>วันที่</th><th>เวลา</th><th>ชื่อ-สกุล</th><th>แผนก</th><th>ประเภท</th><th>ระยะ</th><th>สถานะ</th><th>รูป</th></tr></thead>
+            <tbody id="hBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- พนักงาน -->
+    <div class="page" id="p-emps" hidden>
+      <div class="page-head">
+        <div>
+          <h1 class="adm-h1">พนักงาน</h1>
+          <div class="adm-sub">เพิ่ม แก้ไข รีเซ็ตรหัส และล้างเครื่องที่จำไว้</div>
+        </div>
+        <div class="head-tools">
+          <label class="search"><i data-ic="search" data-s="20"></i><input type="search" id="eSearch" placeholder="ค้นหาชื่อ / แผนก" aria-label="ค้นหาพนักงาน"></label>
+          <button type="button" class="btn-green" id="eAdd"><i data-ic="plus" data-s="20" data-w="2.4"></i><span>เพิ่มพนักงาน</span></button>
+        </div>
+      </div>
+      <section class="card table-card">
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead><tr><th>รหัส</th><th>ชื่อ-สกุล</th><th>แผนก</th><th>สิทธิ์</th><th>เครื่องที่จำไว้</th><th>ใช้งาน</th><th>จัดการ</th></tr></thead>
+            <tbody id="eBody"></tbody>
+          </table>
+        </div>
+      </section>
+      <section class="card form-card" id="eForm">
+        <h2 class="adm-h2" id="eFormTitle">เพิ่มพนักงานใหม่</h2>
+        <input type="hidden" id="fId">
+        <div class="form-row">
+          <label class="fld grow2"><span>ชื่อ-สกุล</span><input type="text" id="fName" placeholder="เช่น สมชาย ใจดี" maxlength="80"></label>
+          <label class="fld grow"><span>แผนก</span><select id="fDept"></select></label>
+          <label class="fld grow"><span>สิทธิ์</span><select id="fRole"></select></label>
+          <label class="fld w150"><span id="fPinLbl">รหัส 4–6 หลัก</span><input type="text" id="fPin" inputmode="numeric" maxlength="6" placeholder="0000" autocomplete="off"></label>
+          <button type="button" class="btn-navy" id="fSave">บันทึก</button>
+          <button type="button" class="btn-outline" id="fCancel" hidden>ยกเลิก</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- ตั้งค่า -->
+    <div class="page" id="p-set" hidden>
+      <div class="page-head">
+        <div>
+          <h1 class="adm-h1">ตั้งค่าระบบ</h1>
+          <div class="adm-sub">พื้นที่ลงเวลา เวลาทำงาน และการแจ้งเตือน</div>
+        </div>
+      </div>
+      <div class="set-grid">
+        <section class="card set-card">
+          <h2 class="adm-h2">พื้นที่ลงเวลา (โรงงาน)</h2>
+          <div class="map-box" id="sMap">ยังไม่ได้ตั้งพิกัดโรงงาน</div>
+          <div class="grid-2">
+            <label class="fld"><span>ละติจูด</span><input type="text" id="sLat" inputmode="decimal" placeholder="เช่น 13.7563"></label>
+            <label class="fld"><span>ลองจิจูด</span><input type="text" id="sLng" inputmode="decimal" placeholder="เช่น 100.5018"></label>
+          </div>
+          <button type="button" class="btn-outline blue" id="sUseHere"><i data-ic="pin" data-s="20"></i><span>ใช้ตำแหน่งที่ยืนอยู่ตอนนี้</span></button>
+          <p class="hint">แนะนำให้ไปยืนตรงจุดที่พนักงานลงเวลา แล้วกดปุ่มด้านบน</p>
+          <label class="fld"><span>รัศมีที่อนุญาตให้ลงเวลา (เมตร)</span><input type="number" id="sRadius" min="20" max="5000" style="max-width:180px"></label>
+          <h2 class="adm-h2" style="margin-top:8px">แผนก</h2>
+          <label class="fld"><span>รายชื่อแผนก (คั่นด้วยจุลภาค หรือขึ้นบรรทัดใหม่)</span><textarea id="sDepts" rows="3"></textarea></label>
+        </section>
+
+        <div class="set-col">
+          <section class="card set-card">
+            <h2 class="adm-h2">เวลาทำงาน</h2>
+            <div class="grid-3">
+              <label class="fld"><span>เวลาเข้างาน</span><input type="time" id="sStart"></label>
+              <label class="fld"><span>ผ่อนผัน (นาที)</span><input type="number" id="sGrace" min="0" max="120"></label>
+              <label class="fld"><span>เวลาออกงาน</span><input type="time" id="sEnd"></label>
+            </div>
+            <div class="fld"><span>วันทำงาน (ใช้กับสรุปตอนเช้า)</span><div class="days" id="sDays"></div></div>
+            <label class="chk"><input type="checkbox" id="sDupBlock"><span>ห้ามลงเวลาซ้ำภายใน</span><input type="number" class="inl" id="sDupMin" min="1" max="240" aria-label="จำนวนนาที"><span>นาที</span></label>
+          </section>
+
+          <section class="card set-card">
+            <h2 class="adm-h2">แจ้งเตือน Telegram</h2>
+            <div class="grid-2">
+              <label class="fld"><span>Bot Token</span><input type="password" id="sToken" autocomplete="off"></label>
+              <label class="fld"><span>Chat ID กลุ่ม</span><input type="text" id="sChat" placeholder="เช่น -1001234567890"></label>
+            </div>
+            <p class="hint">เพิ่มบอทเข้ากลุ่ม พิมพ์ข้อความในกลุ่ม 1 ครั้ง แล้วกด "ค้นหา Chat ID"</p>
+            <div class="row gap8" style="flex-wrap:wrap">
+              <button type="button" class="btn-outline blue" id="sFindChat"><i data-ic="search" data-s="18"></i><span>ค้นหา Chat ID</span></button>
+              <button type="button" class="btn-outline blue" id="sTest"><i data-ic="send" data-s="18"></i><span>ทดสอบส่งข้อความ</span></button>
+            </div>
+            <label class="chk"><input type="checkbox" id="sNIn"><span>ส่งรูป + ชื่อ + เวลา ตอนเข้างาน</span></label>
+            <label class="chk"><input type="checkbox" id="sNOut"><span>ส่งตอนออกงานด้วย</span></label>
+            <label class="chk"><input type="checkbox" id="sNSum"><span>ส่งสรุปรายชื่อคนยังไม่มา ประมาณ 09:00 น.</span></label>
+          </section>
+        </div>
+      </div>
+      <div class="save-bar">
+        <button type="button" class="btn-outline" id="sCancel">ยกเลิกการแก้ไข</button>
+        <button type="button" class="btn-green" id="sSave">บันทึกการตั้งค่า</button>
+      </div>
+    </div>
+  </main>
+</section>
+
+<div id="modal" class="modal" hidden>
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <h2 class="modal-t" id="mTitle"></h2>
+    <div class="modal-b" id="mBody"></div>
+    <div class="modal-f" id="mFoot"></div>
+  </div>
+</div>
+<div id="busy" class="busy" hidden><div class="spinner"></div><div id="busyText">กำลังโหลด...</div></div>
+<div id="toast" class="toast" role="status" hidden></div>
+
+<script>
+/* ============================== ไอคอน ============================== */
+const ICONS = {
+  anchor: '<circle cx="12" cy="5" r="2.5"/><path d="M12 7.5V21"/><path d="M8 11h8"/><path d="M4 14c0 4 3.6 7 8 7s8-3 8-7"/>',
+  camera: '<path d="M3 8a2 2 0 0 1 2-2h2.5l1.5-2h6l1.5 2H19a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="4"/>',
+  pin: '<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',
+  pinx: '<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><path d="M9.5 7.5l5 5"/><path d="M14.5 7.5l-5 5"/>',
+  check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+  lock: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+  refresh: '<path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/>',
+  send: '<path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/>',
+  back: '<path d="M15 18l-6-6 6-6"/>',
+  backspace: '<path d="M21 5H9l-6 7 6 7h12a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1z"/><path d="M17 9l-6 6"/><path d="M11 9l6 6"/>',
+  grid: '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  users: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6.5 6.5-6.5s6.5 2.9 6.5 6.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7"/><path d="M18 13.8c2.1.8 3.5 2.9 3.5 5.2"/>',
+  sliders: '<path d="M4 6h10"/><path d="M18 6h2"/><circle cx="16" cy="6" r="2"/><path d="M4 12h2"/><path d="M10 12h10"/><circle cx="8" cy="12" r="2"/><path d="M4 18h10"/><path d="M18 18h2"/><circle cx="16" cy="18" r="2"/>',
+  download: '<path d="M12 4v11"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/>',
+  plus: '<path d="M12 5v14"/><path d="M5 12h14"/>',
+  search: '<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>',
+  person: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/>',
+  signal: '<path d="M12 20h.01"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/><path d="M5 13a10 10 0 0 1 14 0"/>'
+};
+function ic(name, size, w) {
+  size = size || 24;
+  return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' +
+    (w || 2) + '" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICONS[name] + '</svg>';
+}
+
+/* ============================== สถานะ / ตัวช่วย ============================== */
+const $ = id => document.getElementById(id);
+const S = {
+  token: null, user: null, home: null, offset: 0,
+  pos: null, posErr: null, watchId: null, clockTimer: null,
+  stream: null, photo: null, nextType: 'IN', doneTimer: null, busy: false,
+  dash: null, dashFilter: 'all', emps: null, photos: {}, photoPending: {}, toastTimer: null
+};
+const DAY_NAMES = ['จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.', 'อา.'];
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+  del(k) { try { localStorage.removeItem(k); } catch (e) {} }
+};
+function clientId() {
+  let c = store.get('km_cid');
+  if (!c) { c = Math.random().toString(36).slice(2) + Date.now().toString(36); store.set('km_cid', c); }
+  return c;
+}
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+function nowMs() { return Date.now() + (S.offset || 0); }
+const DTF = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Bangkok', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
+function parts(ms) { const o = {}; DTF.formatToParts(new Date(ms)).forEach(p => { o[p.type] = p.value; }); return o; }
+function bkkTime(ms) { const p = parts(ms); return p.hour + ':' + p.minute; }
+function bkkKey(ms) { const p = parts(ms); return p.year + '-' + p.month + '-' + p.day; }
+function bkkDateShort(ms) { const p = parts(ms); return p.day + '/' + p.month + '/' + (Number(p.year) + 543); }
+function addDays(key, n) { const d = new Date(key + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); }
+function distM(lat1, lng1, lat2, lng2) {
+  const R = 6371000, r = Math.PI / 180;
+  const dLat = (lat2 - lat1) * r, dLng = (lng2 - lng1) * r;
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * r) * Math.cos(lat2 * r) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+function fmtDist(m) { return m >= 1000 ? (m / 1000).toFixed(1) + ' กิโลเมตร' : m + ' เมตร'; }
+function fmtDistShort(m) { return m == null ? '–' : (m >= 1000 ? (m / 1000).toFixed(1) + ' กม.' : m + ' ม.'); }
+function vibrate(p) { try { if (navigator.vibrate) navigator.vibrate(p); } catch (e) {} }
+function toast(msg, kind) {
+  const t = $('toast');
+  t.textContent = msg; t.className = 'toast ' + (kind || ''); t.hidden = false;
+  clearTimeout(S.toastTimer);
+  S.toastTimer = setTimeout(() => { t.hidden = true; }, 4500);
+}
+function setBusy(on, text) {
+  S.busy = on;
+  if (text) $('busyText').textContent = text;
+  $('busy').hidden = !on;
+}
+function rowMsg(cols, msg) { return '<tr><td colspan="' + cols + '" class="empty-row">' + msg + '</td></tr>'; }
+
+/* ============================== เรียกเซิร์ฟเวอร์ ============================== */
+// ใส่ URL ของ Apps Script Web app (ลงท้ายด้วย /exec)
+const API_URL = 'https://script.google.com/macros/s/AKfycbzO_MhLUXUc82adMq05tfb33xEX0QnQ0CVCdyl2_uatc8ihQNS8iYiwA7YEpbQP9vpc/exec';
+const API_TIMEOUT_MS = 60000;
+
+async function rpc(action, payload) {
+  if (!/^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec$/.test(API_URL)) {
+    const e = new Error('ยังไม่ได้ตั้งค่า API_URL ในไฟล์ index.html');
+    e.code = 'CONFIG';
+    throw e;
+  }
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), API_TIMEOUT_MS);
+  let res;
+  try {
+    res = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },   // simple request: ไม่ติด CORS preflight
+      body: JSON.stringify({ action: action, payload: payload || {}, token: S.token }),
+      redirect: 'follow',
+      signal: ctrl.signal
+    });
+  } catch (err) {
+    const e = new Error(err.name === 'AbortError'
+      ? 'ระบบตอบช้าเกินไป กรุณาลองใหม่'
+      : 'เชื่อมต่อระบบไม่ได้ กรุณาตรวจอินเทอร์เน็ตแล้วลองใหม่');
+    e.code = 'NET';
+    throw e;
+  } finally {
+    clearTimeout(timer);
+  }
+  let r;
+  try {
+    r = await res.json();
+  } catch (err) {
+    const e = new Error('ระบบตอบกลับไม่ถูกต้อง กรุณาลองใหม่ หรือแจ้งผู้ดูแล');
+    e.code = 'NET';
+    throw e;
+  }
+  if (r && r.ok) return r.data;
+  const e = new Error(r && r.msg ? r.msg : 'ไม่ได้รับข้อมูลจากระบบ');
+  e.code = r && r.code;
+  throw e;
+}
+async function call(action, payload) {
+  try {
+    return await rpc(action, payload);
+  } catch (err) {
+    if (err.code !== 'AUTH') throw err;
+    const dt = store.get('km_dev');
+    if (dt) {
+      try {
+        const r = await rpc('loginDevice', { deviceToken: dt });
+        S.token = r.token; S.user = r.user;
+        return await rpc(action, payload);
+      } catch (e2) {
+        if (e2.code !== 'NET' && e2.code !== 'CONFIG') store.del('km_dev');
+      }
+    }
+    goPin('หมดเวลาใช้งาน กรุณาใส่รหัสอีกครั้ง');
+    throw err;
+  }
+}
+
+/* ============================== หน้าจอ ============================== */
+function show(view) {
+  document.querySelectorAll('.view').forEach(v => { v.hidden = v.id !== 'v-' + view; });
+  document.body.dataset.view = view;
+  window.scrollTo(0, 0);
+  if (['pin', 'admin', 'done', 'loading'].includes(view)) stopGps();
+  if (view !== 'camera') stopCamera();
+  if (view !== 'done') clearDoneTimer();
+  if (view !== 'home') clearInterval(S.clockTimer);
+}
+function currentView() { return document.body.dataset.view; }
+
+/* ============================== เริ่มระบบ ============================== */
+async function boot() {
+  document.querySelectorAll('i[data-ic]').forEach(el => {
+    el.outerHTML = ic(el.dataset.ic, Number(el.dataset.s) || 24, el.dataset.w);
+  });
+  bindEvents();
+  const dt = store.get('km_dev');
+  if (dt) {
+    try {
+      const r = await rpc('loginDevice', { deviceToken: dt });
+      onLogin(r);
+      return;
+    } catch (e) {
+      const keep = e.code === 'NET' || e.code === 'CONFIG';
+      if (!keep) store.del('km_dev');
+      goPin(keep ? e.message : '');
+      return;
+    }
+  }
+  goPin('');
+}
+
+function onLogin(r) {
+  S.token = r.token;
+  S.user = r.user;
+  if (r.deviceToken) store.set('km_dev', r.deviceToken);
+  if (r.user.isAdmin) openAdmin(); else openHome();
+}
+
+/* ============================== ใส่รหัส ============================== */
+let pin = '';
+function goPin(msg) {
+  S.token = null; S.user = null; S.home = null; pin = '';
+  renderDots();
+  $('pinMsg').textContent = msg || '';
+  closeModal();
+  show('pin');
+}
+function renderDots() {
+  const n = Math.max(4, pin.length);
+  let html = '';
+  for (let i = 0; i < n; i++) html += '<span class="dot' + (i < pin.length ? ' on' : '') + '"></span>';
+  $('pinDots').innerHTML = html;
+  $('pinDots').setAttribute('aria-label', 'ใส่แล้ว ' + pin.length + ' ตัว');
+}
+function pressKey(k) {
+  if (S.busy) return;
+  if (k === 'ok') { submitPin(); return; }
+  if (k === 'del') pin = pin.slice(0, -1);
+  else if (pin.length < 6) pin += k;
+  $('pinMsg').textContent = '';
+  renderDots();
+}
+async function submitPin() {
+  if (pin.length < 4) { $('pinMsg').textContent = 'กรุณาใส่รหัสให้ครบ 4 ตัว'; vibrate(150); return; }
+  setBusy(true, 'กำลังตรวจรหัส...');
+  try {
+    const r = await rpc('loginPin', { pin: pin, remember: $('pinRemember').checked, clientId: clientId() });
+    pin = '';
+    onLogin(r);
+  } catch (e) {
+    pin = '';
+    renderDots();
+    $('pinMsg').textContent = e.message;
+    vibrate([120, 80, 120]);
+  } finally {
+    setBusy(false);
+  }
+}
+
+async function logout() {
+  const ok = await confirmBox('ออกจากระบบ?', 'ถ้าออกจากระบบ ครั้งหน้าต้องใส่รหัสใหม่', 'ออกจากระบบ', 'btn-red');
+  if (!ok) return;
+  const dt = store.get('km_dev');
+  store.del('km_dev');
+  try { if (S.token) await rpc('logout', { deviceToken: dt }); } catch (e) {}
+  goPin('');
+}
+
+/* ============================== หน้าหลักพนักงาน ============================== */
+async function openHome() {
+  show('home');
+  $('homeName').textContent = S.user ? S.user.name : '';
+  $('homeAdminBtn').hidden = !(S.user && S.user.isAdmin);
+  renderHomeState();
+  if (S.watchId == null) startGps();
+  setBusy(true, 'กำลังโหลด...');
+  try {
+    applyHome(await call('getHome'));
+  } catch (e) {
+    if (e.code !== 'AUTH') toast(e.message, 'err');
+  } finally {
+    setBusy(false);
+  }
+}
+function applyHome(h) {
+  S.home = h;
+  S.offset = h.nowMs - Date.now();
+  S.nextType = h.next;
+  $('homeName').textContent = h.user.name;
+  $('homeDate').textContent = h.dateText;
+  $('tIn').textContent = h.today.inTime || '--:--';
+  $('tInStat').textContent = h.today.inStatus || '';
+  $('tOut').textContent = h.today.outTime || '--:--';
+  startClock();
+  renderHomeState();
+}
+function startClock() {
+  clearInterval(S.clockTimer);
+  const tick = () => {
+    $('homeClock').textContent = bkkTime(nowMs());
+    if (S.home && bkkKey(nowMs()) !== S.home.dkey && currentView() === 'home' && !S.busy) openHome();
+  };
+  tick();
+  S.clockTimer = setInterval(tick, 5000);
+}
+
+/* ---------- GPS ---------- */
+function startGps() {
+  stopGps();
+  S.pos = null; S.posErr = null;
+  renderHomeState();
+  if (!('geolocation' in navigator)) { S.posErr = 'NOSUPPORT'; renderHomeState(); return; }
+  S.watchId = navigator.geolocation.watchPosition(
+    p => {
+      S.pos = { lat: p.coords.latitude, lng: p.coords.longitude, acc: p.coords.accuracy, t: Date.now() };
+      S.posErr = null;
+      renderHomeState();
+    },
+    e => {
+      S.posErr = e.code === 1 ? 'DENIED' : 'UNAVAILABLE';
+      if (!S.pos) renderHomeState();
+    },
+    { enableHighAccuracy: true, maximumAge: 10000, timeout: 20000 }
+  );
+}
+function stopGps() {
+  if (S.watchId != null && navigator.geolocation) navigator.geolocation.clearWatch(S.watchId);
+  S.watchId = null;
+}
+function geoState() {
+  const f = S.home && S.home.factory;
+  if (!S.home) return { k: 'checking' };
+  if (!f || f.lat == null || f.lng == null) return { k: 'nofactory' };
+  if (!S.pos) return S.posErr ? { k: 'error', err: S.posErr } : { k: 'checking' };
+  const d = Math.round(distM(S.pos.lat, S.pos.lng, f.lat, f.lng));
+  if (S.pos.acc > S.home.maxAcc) return { k: 'weak', d: d };
+  return d <= f.radius ? { k: 'in', d: d } : { k: 'out', d: d };
+}
+function renderHomeState() {
+  const g = geoState();
+  const cls = { in: 'ok', out: 'bad', error: 'bad', nofactory: 'bad', weak: 'wait', checking: 'wait' }[g.k];
+  let title, sub, icon = 'pin';
+  switch (g.k) {
+    case 'in': title = 'อยู่ในพื้นที่โรงงาน'; sub = 'ห่างจุดลงเวลา ' + fmtDist(g.d); break;
+    case 'out': title = 'อยู่นอกพื้นที่โรงงาน'; sub = 'ห่างโรงงาน ' + fmtDist(g.d); icon = 'pinx'; break;
+    case 'weak': title = 'สัญญาณ GPS ยังไม่ชัด'; sub = 'รอสักครู่ หรือออกไปยืนที่โล่ง'; icon = 'signal'; break;
+    case 'error':
+      icon = 'pinx';
+      if (g.err === 'DENIED') { title = 'ยังไม่ได้อนุญาตให้ใช้ตำแหน่ง'; sub = 'กดอนุญาตตำแหน่ง แล้วกดลองใหม่'; }
+      else { title = 'หาตำแหน่งไม่ได้'; sub = 'กรุณาเปิด GPS ในมือถือ แล้วกดลองใหม่'; }
+      break;
+    case 'nofactory': title = 'ยังไม่ได้ตั้งพิกัดโรงงาน'; sub = 'กรุณาแจ้งผู้บริหาร'; icon = 'pinx'; break;
+    default: title = 'กำลังหาตำแหน่ง...'; sub = 'กรุณารอสักครู่';
+  }
+  $('gpsCard').className = 'gps-card ' + cls;
+  $('gpsIc').innerHTML = ic(icon, 28);
+  $('gpsTitle').textContent = title;
+  $('gpsSub').textContent = sub;
+
+  const chip = $('camChip');
+  chip.className = 'cam-chip ' + cls;
+  chip.innerHTML = g.k === 'in' ? ic('check', 18, 2.5) + '<span>อยู่ในโรงงาน</span>'
+    : (cls === 'bad' ? ic('pinx', 18) + '<span>อยู่นอกพื้นที่</span>' : '<span>กำลังหาตำแหน่ง...</span>');
+
+  const btn = $('bigBtn'), help = $('homeHelp'), retry = $('retryGps');
+  help.hidden = true; retry.hidden = true;
+
+  if (!S.home) {
+    btn.className = 'big-btn locked'; btn.disabled = true;
+    btn.innerHTML = '<div class="spinner sm"></div><span class="bb-t">กำลังโหลด</span>';
+    return;
+  }
+  if (S.nextType === 'DONE') {
+    btn.className = 'big-btn locked'; btn.disabled = true;
+    btn.innerHTML = ic('check', 56, 2.4) + '<span class="bb-t">วันนี้ลงเวลาครบแล้ว</span><span class="bb-s">พรุ่งนี้พบกันใหม่</span>';
+    return;
+  }
+  if (g.k === 'in') {
+    const isIn = S.nextType === 'IN';
+    btn.className = 'big-btn ' + (isIn ? 'go-in' : 'go-out'); btn.disabled = false;
+    btn.innerHTML = ic('camera', 68, 1.8) + '<span class="bb-t">' + (isIn ? 'เข้างาน' : 'ออกงาน') + '</span><span class="bb-s">กดแล้วถ่ายรูปหน้า</span>';
+    return;
+  }
+  if (g.k === 'checking' || g.k === 'weak') {
+    btn.className = 'big-btn locked'; btn.disabled = true;
+    btn.innerHTML = '<div class="spinner sm"></div><span class="bb-t">กำลังหาตำแหน่ง</span>';
+    if (g.k === 'weak') retry.hidden = false;
+    return;
+  }
+  btn.className = 'big-btn locked'; btn.disabled = true;
+  btn.innerHTML = ic('lock', 52) + '<span class="bb-t">ยังลงเวลาไม่ได้</span>';
+  help.hidden = false;
+  if (g.k === 'out') help.innerHTML = 'ต้องอยู่ในโรงงานก่อน<br>จึงจะลงเวลาได้';
+  else if (g.k === 'nofactory') help.innerHTML = 'ผู้บริหารต้องตั้งพิกัดโรงงานก่อน';
+  else help.innerHTML = 'เปิด GPS และอนุญาตให้ใช้ตำแหน่งก่อน';
+  retry.hidden = g.k === 'nofactory';
+}
+
+/* ---------- กล้อง ---------- */
+async function openCamera() {
+  if (S.busy) return;
+  if (S.home && bkkKey(nowMs()) !== S.home.dkey) { await openHome(); return; }
+  show('camera');
+  $('camTitle').textContent = S.nextType === 'OUT' ? 'ถ่ายรูปก่อนออกงาน' : 'ถ่ายรูปหน้าตัวเอง';
+  $('camErr').hidden = true;
+  $('shutter').disabled = true;
+  renderHomeState();
+  try {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      const e = new Error('nosupport'); e.name = 'NoSupport'; throw e;
+    }
+    S.stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'user', width: { ideal: 720 }, height: { ideal: 960 } },
+      audio: false
+    });
+    if (currentView() !== 'camera') { stopCamera(); return; }
+    const v = $('camVideo');
+    v.srcObject = S.stream;
+    await v.play().catch(() => {});
+    $('shutter').disabled = false;
+  } catch (e) {
+    let msg = 'เปิดกล้องไม่ได้ กรุณาลองใหม่';
+    if (e.name === 'NotAllowedError') msg = 'ยังไม่ได้อนุญาตให้ใช้กล้อง กรุณากดอนุญาต แล้วลองใหม่';
+    else if (e.name === 'NoSupport') msg = 'เปิดกล้องผ่านหน้าเว็บนี้ไม่ได้ กรุณาเปิดด้วย Chrome หรือ Safari';
+    else if (e.name === 'NotFoundError') msg = 'ไม่พบกล้องในเครื่องนี้';
+    $('camErrText').textContent = msg;
+    $('camErr').hidden = false;
+  }
+}
+function stopCamera() {
+  if (S.stream) { S.stream.getTracks().forEach(t => t.stop()); S.stream = null; }
+  const v = $('camVideo');
+  if (v) v.srcObject = null;
+}
+function capture() {
+  const v = $('camVideo');
+  if (!v.videoWidth) { toast('กล้องยังไม่พร้อม กรุณารอสักครู่', 'err'); return; }
+  const W = 480;
+  const H = Math.round(W * v.videoHeight / v.videoWidth);
+  const c = $('camCanvas');
+  c.width = W; c.height = H;
+  const x = c.getContext('2d');
+  x.save();
+  x.translate(W, 0); x.scale(-1, 1);   // ให้รูปเหมือนที่เห็นบนจอ
+  x.drawImage(v, 0, 0, W, H);
+  x.restore();
+  const bar = 34;
+  x.fillStyle = 'rgba(15,42,67,.85)';
+  x.fillRect(0, H - bar, W, bar);
+  x.fillStyle = '#fff';
+  x.font = '600 16px Sarabun, Tahoma, sans-serif';
+  x.textBaseline = 'middle';
+  x.fillText(bkkDateShort(nowMs()) + ' · ' + bkkTime(nowMs()) + ' น. · ' + (S.user ? S.user.name : ''), 12, H - bar / 2, W - 24);
+  S.photo = c.toDataURL('image/jpeg', 0.72);
+  stopCamera();
+  $('confirmImg').src = S.photo;
+  $('useLbl').textContent = S.nextType === 'OUT' ? 'ใช้รูปนี้ บันทึกออกงาน' : 'ใช้รูปนี้ บันทึกเข้างาน';
+  $('confirmMsg').textContent = '';
+  $('useBtn').disabled = false;
+  show('confirm');
+  vibrate(60);
+}
+
+/* ---------- บันทึก ---------- */
+function freshPos() {
+  if (S.pos && Date.now() - S.pos.t < 30000) return Promise.resolve(S.pos);
+  return new Promise((resolve, reject) => {
+    if (!navigator.geolocation) { reject(new Error('เครื่องนี้หาตำแหน่งไม่ได้')); return; }
+    navigator.geolocation.getCurrentPosition(
+      p => {
+        S.pos = { lat: p.coords.latitude, lng: p.coords.longitude, acc: p.coords.accuracy, t: Date.now() };
+        resolve(S.pos);
+      },
+      () => reject(new Error('หาตำแหน่งไม่ได้ กรุณาเปิด GPS แล้วลองใหม่')),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 }
+    );
+  });
+}
+async function submitAttendance() {
+  if (S.busy || !S.photo) return;
+  $('confirmMsg').textContent = '';
+  $('useBtn').disabled = true;
+  setBusy(true, 'กำลังบันทึก...');
+  let backHome = false, result = null;
+  try {
+    const pos = await freshPos();
+    result = await call('submitAttendance', {
+      type: S.nextType, lat: pos.lat, lng: pos.lng, acc: pos.acc, image: S.photo
+    });
+  } catch (e) {
+    $('confirmMsg').textContent = e.message;
+    $('useBtn').disabled = false;
+    vibrate([120, 80, 120]);
+    if (e.code === 'STATE' || e.code === 'OUT_OF_AREA') { backHome = true; toast(e.message, 'err'); }
+  } finally {
+    setBusy(false);
+  }
+  if (result) showDone(result);
+  else if (backHome) openHome();
+}
+
+function showDone(r) {
+  show('done');
+  S.photo = null;
+  const isOut = r.type === 'OUT';
+  $('doneTitle').textContent = isOut ? 'บันทึกออกงานแล้ว' : 'บันทึกเข้างานแล้ว';
+  $('doneTime').textContent = r.time + ' น.';
+  const st = $('doneStatus');
+  st.textContent = r.statusText;
+  st.className = 'done-status' + (r.minutes > 0 ? ' warn' : '');
+  $('doneName').textContent = S.user ? S.user.name : '';
+  const noti = $('doneNoti');
+  noti.hidden = r.tg === 'off';
+  noti.innerHTML = r.tg === 'sent'
+    ? ic('send', 22) + '<span>ส่งแจ้งหัวหน้าเรียบร้อยแล้ว</span>'
+    : '<span>บันทึกแล้ว แต่ส่งแจ้งเตือนไม่สำเร็จ</span>';
+  vibrate(250);
+  let n = 10;
+  const tick = () => {
+    $('doneCount').textContent = 'หน้านี้จะกลับเองใน ' + n + ' วินาที';
+    if (n-- <= 0) { clearDoneTimer(); openHome(); }
+  };
+  tick();
+  S.doneTimer = setInterval(tick, 1000);
+}
+function clearDoneTimer() { if (S.doneTimer) { clearInterval(S.doneTimer); S.doneTimer = null; } }
+
+/* ============================== ผู้บริหาร ============================== */
+function openAdmin() {
+  show('admin');
+  $('adminName').textContent = S.user.name;
+  if (!$('dashDate').value) $('dashDate').value = bkkKey(nowMs());
+  goPage('dash');
+}
+function goPage(p) {
+  document.querySelectorAll('.nav-btn[data-page]').forEach(b => b.classList.toggle('active', b.dataset.page === p));
+  ['dash', 'hist', 'emps', 'set'].forEach(x => { $('p-' + x).hidden = x !== p; });
+  ({ dash: loadDash, hist: initHist, emps: loadEmps, set: loadSettings })[p]();
+}
+
+/* ---------- ภาพรวม ---------- */
+async function loadDash() {
+  const date = $('dashDate').value || bkkKey(nowMs());
+  $('dashBody').innerHTML = rowMsg(7, 'กำลังโหลด...');
+  try {
+    const d = await call('getDashboard', { date: date });
+    S.dash = d;
+    $('dashTitle').textContent = d.isToday ? 'ภาพรวมวันนี้' : 'ภาพรวมรายวัน';
+    $('dashSub').textContent = d.dateText + (d.isToday ? ' · อัปเดตล่าสุด ' + d.updated + ' น.' : '');
+    $('stTotal').textContent = d.stats.total;
+    $('stIn').textContent = d.stats.arrived;
+    $('stLate').textContent = d.stats.late;
+    $('stAbs').textContent = d.stats.absent;
+    $('stLateSub').textContent = 'หลัง ' + d.lateAfter + ' น.';
+    $('stAbsL').textContent = d.isToday ? 'ยังไม่มา' : 'ไม่ได้ลงเวลา';
+    renderDash();
+  } catch (e) {
+    $('dashBody').innerHTML = rowMsg(7, esc(e.message));
+  }
+}
+function renderDash() {
+  const d = S.dash;
+  if (!d) return;
+  const absentLabel = d.isToday ? 'ยังไม่มา' : 'ไม่ได้ลงเวลา';
+  const chips = [['all', 'ทั้งหมด', d.stats.total], ['in', 'มาแล้ว', d.stats.arrived],
+    ['late', 'มาสาย', d.stats.late], ['absent', absentLabel, d.stats.absent]];
+  $('dashChips').innerHTML = chips.map(c =>
+    '<button type="button" class="chip' + (S.dashFilter === c[0] ? ' active' : '') + '" data-filter="' + c[0] + '">' + c[1] + ' ' + c[2] + '</button>'
+  ).join('');
+
+  const q = $('dashSearch').value.trim().toLowerCase();
+  const f = S.dashFilter;
+  const rows = d.rows.filter(r =>
+    (f === 'all' || (f === 'in' && r.state !== 'absent') || r.state === f) &&
+    (!q || (r.name + ' ' + r.dept + ' ' + r.id).toLowerCase().includes(q))
+  );
+  $('dashBody').innerHTML = rows.length ? rows.map(r => {
+    const thumb = r.inPhoto
+      ? '<button type="button" class="thumb" data-photo="' + esc(r.inPhoto) + '" data-cap="' + esc(r.name + ' · เข้างาน ' + r.inTime + ' น.') + '" aria-label="ดูรูปขยายของ ' + esc(r.name) + '">' + ic('person', 28, 1.6) + '<img alt="" data-fid="' + esc(r.inPhoto) + '"></button>'
+      : '<span class="thumb">' + ic('person', 28, 1.6) + '</span>';
+    const out = r.outTime
+      ? '<button type="button" class="link-btn" data-photo="' + esc(r.outPhoto) + '" data-cap="' + esc(r.name + ' · ออกงาน ' + r.outTime + ' น.') + '">' + esc(r.outTime) + '</button>' +
+        (r.outStatus ? '<span class="small-note">' + esc(r.outStatus) + '</span>' : '')
+      : '–';
+    return '<tr><td>' + thumb + '</td><td class="b">' + esc(r.name) + '</td><td>' + esc(r.dept) + '</td>' +
+      '<td class="b">' + (r.inTime ? esc(r.inTime) : '–') + '</td><td>' + out + '</td>' +
+      '<td>' + fmtDistShort(r.dist) + '</td><td><span class="pill ' + r.state + '">' + esc(r.label) + '</span></td></tr>';
+  }).join('') : rowMsg(7, d.rows.length ? 'ไม่พบรายชื่อที่ค้นหา' : 'ยังไม่มีพนักงานในระบบ เพิ่มได้ที่เมนู "พนักงาน"');
+  loadThumbs();
+}
+async function loadThumbs() {
+  const imgs = Array.from(document.querySelectorAll('img[data-fid]'));
+  imgs.forEach(im => { if (!im.getAttribute('src') && S.photos[im.dataset.fid]) im.src = S.photos[im.dataset.fid]; });
+  const need = Array.from(new Set(imgs.filter(im => !im.getAttribute('src')).map(im => im.dataset.fid)))
+    .filter(id => !S.photoPending[id]);
+  for (let i = 0; i < need.length; i += 8) {
+    const chunk = need.slice(i, i + 8);
+    chunk.forEach(id => { S.photoPending[id] = true; });
+    try {
+      Object.assign(S.photos, await call('getPhotos', { ids: chunk }));
+      document.querySelectorAll('img[data-fid]').forEach(im => {
+        if (!im.getAttribute('src') && S.photos[im.dataset.fid]) im.src = S.photos[im.dataset.fid];
+      });
+    } catch (e) {
+      /* ไม่แสดงรูปย่อ */
+    } finally {
+      chunk.forEach(id => { delete S.photoPending[id]; });
+    }
+  }
+}
+async function showPhoto(fid, cap) {
+  if (!fid) return;
+  if (!S.photos[fid]) {
+    setBusy(true, 'กำลังโหลดรูป...');
+    try { Object.assign(S.photos, await call('getPhotos', { ids: [fid] })); }
+    catch (e) { toast(e.message, 'err'); }
+    finally { setBusy(false); }
+  }
+  if (!S.photos[fid]) { toast('เปิดรูปนี้ไม่ได้', 'err'); return; }
+  showModal({ title: cap || 'รูปถ่าย', html: '<img alt="' + esc(cap || 'รูปถ่าย') + '" src="' + S.photos[fid] + '">' });
+}
+
+async function doExport(from, to, empId) {
+  setBusy(true, 'กำลังสร้างไฟล์...');
+  try {
+    const r = await call('exportHistory', { from: from, to: to, empId: empId || '' });
+    showModal({
+      title: 'สร้างไฟล์แล้ว',
+      html: '<p>' + esc(r.name) + '</p><p>' + r.count + ' รายการ · เก็บไว้ในโฟลเดอร์ "รายงาน"</p>',
+      buttons: [{ label: 'ปิด', cls: 'btn-outline' }, { label: 'เปิดไฟล์', cls: 'btn-green', href: r.url }]
+    });
+  } catch (e) {
+    toast(e.message, 'err');
+  } finally {
+    setBusy(false);
+  }
+}
+
+/* ---------- ประวัติ ---------- */
+async function initHist() {
+  if (!$('hFrom').value) {
+    const t = bkkKey(nowMs());
+    $('hTo').value = t;
+    $('hFrom').value = addDays(t, -6);
+  }
+  await ensureEmpOptions();
+  loadHist();
+}
+async function ensureEmpOptions() {
+  if (!S.emps) { try { S.emps = await call('listEmployees'); } catch (e) { return; } }
+  const sel = $('hEmp'), cur = sel.value;
+  sel.innerHTML = '<option value="">ทุกคน</option>' + S.emps.rows.map(r =>
+    '<option value="' + esc(r.id) + '">' + esc(r.name) + (r.active ? '' : ' (ปิดใช้งาน)') + '</option>').join('');
+  sel.value = cur;
+}
+async function loadHist() {
+  $('hBody').innerHTML = rowMsg(8, 'กำลังโหลด...');
+  $('hCap').textContent = '';
+  try {
+    const h = await call('getHistory', { from: $('hFrom').value, to: $('hTo').value, empId: $('hEmp').value });
+    $('hCap').textContent = 'พบ ' + h.total + ' รายการ' + (h.total > h.limit ? ' (แสดง ' + h.limit + ' รายการล่าสุด ส่งออกเป็นชีตเพื่อดูทั้งหมด)' : '');
+    $('hBody').innerHTML = h.rows.length ? h.rows.map(r => {
+      const typeCls = r.type === 'ออกงาน' ? 'out' : 'in';
+      const stCls = r.late ? 'late' : 'ok';
+      return '<tr><td>' + esc(r.dth) + '</td><td class="b">' + esc(r.time) + '</td><td class="b">' + esc(r.name) + '</td>' +
+        '<td>' + esc(r.dept) + '</td><td><span class="pill ' + typeCls + '">' + esc(r.type) + '</span></td>' +
+        '<td>' + fmtDistShort(r.dist) + '</td><td><span class="pill ' + stCls + '">' + esc(r.status) + '</span></td>' +
+        '<td>' + (r.fileId ? '<button type="button" class="btn-sm" data-photo="' + esc(r.fileId) + '" data-cap="' + esc(r.name + ' · ' + r.type + ' ' + r.dth + ' ' + r.time + ' น.') + '">ดูรูป</button>' : '–') + '</td></tr>';
+    }).join('') : rowMsg(8, 'ไม่มีข้อมูลในช่วงนี้');
+  } catch (e) {
+    $('hBody').innerHTML = rowMsg(8, esc(e.message));
+  }
+}
+
+/* ---------- พนักงาน ---------- */
+async function loadEmps() {
+  $('eBody').innerHTML = rowMsg(7, 'กำลังโหลด...');
+  try {
+    S.emps = await call('listEmployees');
+    fillFormSelects();
+    renderEmps();
+  } catch (e) {
+    $('eBody').innerHTML = rowMsg(7, esc(e.message));
+  }
+}
+function fillFormSelects(currentDept) {
+  if (!S.emps) return;
+  const depts = S.emps.departments.slice();
+  if (currentDept && depts.indexOf(currentDept) < 0) depts.push(currentDept);
+  $('fDept').innerHTML = depts.map(d => '<option>' + esc(d) + '</option>').join('');
+  $('fRole').innerHTML = S.emps.roles.map(r => '<option>' + esc(r) + '</option>').join('');
+}
+function renderEmps() {
+  const q = $('eSearch').value.trim().toLowerCase();
+  const rows = S.emps.rows.filter(r => !q || (r.id + ' ' + r.name + ' ' + r.dept + ' ' + r.role).toLowerCase().includes(q));
+  $('eBody').innerHTML = rows.length ? rows.map(r =>
+    '<tr class="' + (r.active ? '' : 'off') + '">' +
+    '<td>' + esc(r.id) + '</td><td class="b">' + esc(r.name) + '</td><td>' + esc(r.dept) + '</td><td>' + esc(r.role) + '</td>' +
+    '<td>' + (r.devices ? 'จำไว้แล้ว (' + r.devices + ' เครื่อง)' : 'ยังไม่มี') + '</td>' +
+    '<td><label class="switch"><input type="checkbox" data-act="active" data-id="' + esc(r.id) + '"' + (r.active ? ' checked' : '') + '><span>' + (r.active ? 'เปิด' : 'ปิด') + '</span></label></td>' +
+    '<td><div class="acts">' +
+      '<button type="button" class="btn-sm" data-act="edit" data-id="' + esc(r.id) + '">แก้ไข</button>' +
+      '<button type="button" class="btn-sm" data-act="pin" data-id="' + esc(r.id) + '">รีเซ็ตรหัส</button>' +
+      '<button type="button" class="btn-sm" data-act="dev" data-id="' + esc(r.id) + '"' + (r.devices ? '' : ' disabled') + '>ล้างเครื่อง</button>' +
+    '</div></td></tr>'
+  ).join('') : rowMsg(7, S.emps.rows.length ? 'ไม่พบรายชื่อที่ค้นหา' : 'ยังไม่มีพนักงาน กดปุ่ม "เพิ่มพนักงาน"');
+}
+function empById(id) { return S.emps.rows.find(r => r.id === id); }
+function resetEmpForm() {
+  $('fId').value = '';
+  $('fName').value = '';
+  $('fPin').value = '';
+  fillFormSelects();
+  $('eFormTitle').textContent = 'เพิ่มพนักงานใหม่';
+  $('fPinLbl').textContent = 'รหัส 4–6 หลัก';
+  $('fCancel').hidden = true;
+}
+function editEmp(r) {
+  fillFormSelects(r.dept);
+  $('fId').value = r.id;
+  $('fName').value = r.name;
+  $('fDept').value = r.dept;
+  $('fRole').value = r.role;
+  $('fPin').value = '';
+  $('eFormTitle').textContent = 'แก้ไขข้อมูล: ' + r.name;
+  $('fPinLbl').textContent = 'รหัสใหม่ (เว้นว่างได้)';
+  $('fCancel').hidden = false;
+  $('eForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  $('fName').focus();
+}
+async function saveEmp() {
+  const payload = {
+    id: $('fId').value, name: $('fName').value.trim(), dept: $('fDept').value,
+    role: $('fRole').value, pin: $('fPin').value.trim()
+  };
+  if (!payload.name) { toast('กรุณาใส่ชื่อ-สกุล', 'err'); $('fName').focus(); return; }
+  if (payload.pin && !/^\d{4,6}$/.test(payload.pin)) { toast('รหัสต้องเป็นตัวเลข 4–6 ตัว', 'err'); return; }
+  if (!payload.id && !payload.pin) { toast('กรุณาตั้งรหัสให้พนักงานใหม่', 'err'); $('fPin').focus(); return; }
+  setBusy(true, 'กำลังบันทึก...');
+  try {
+    const r = await call('saveEmployee', payload);
+    toast(payload.id ? 'บันทึกการแก้ไขแล้ว' : 'เพิ่มพนักงานแล้ว (รหัสพนักงาน ' + r.id + ')', 'ok');
+    resetEmpForm();
+    await loadEmps();
+  } catch (e) {
+    toast(e.message, 'err');
+  } finally {
+    setBusy(false);
+  }
+}
+function askResetPin(r) {
+  showModal({
+    title: 'รีเซ็ตรหัส: ' + r.name,
+    html: '<label class="fld"><span>รหัสใหม่ 4–6 หลัก</span><input type="text" id="mPin" inputmode="numeric" maxlength="6" autocomplete="off"></label><p class="inline-err" id="mErr"></p>',
+    buttons: [
+      { label: 'ยกเลิก', cls: 'btn-outline' },
+      { label: 'บันทึกรหัสใหม่', cls: 'btn-navy', onClick: async () => {
+        const v = $('mPin').value.trim();
+        if (!/^\d{4,6}$/.test(v)) { $('mErr').textContent = 'รหัสต้องเป็นตัวเลข 4–6 ตัว'; return true; }
+        try { await call('resetPin', { id: r.id, pin: v }); toast('เปลี่ยนรหัสแล้ว', 'ok'); }
+        catch (e) { $('mErr').textContent = e.message; return true; }
+      } }
+    ]
+  });
+  setTimeout(() => { const el = $('mPin'); if (el) el.focus(); }, 50);
+}
+async function clearDev(r) {
+  const ok = await confirmBox('ล้างเครื่องที่จำไว้?', r.name + ' จะต้องใส่รหัสใหม่ในครั้งถัดไป', 'ล้างเครื่อง', 'btn-red');
+  if (!ok) return;
+  setBusy(true, 'กำลังล้าง...');
+  try { await call('clearDevices', { id: r.id }); toast('ล้างเครื่องแล้ว', 'ok'); await loadEmps(); }
+  catch (e) { toast(e.message, 'err'); }
+  finally { setBusy(false); }
+}
+async function toggleActive(input) {
+  const r = empById(input.dataset.id);
+  const active = input.checked;
+  if (!active) {
+    const ok = await confirmBox('ปิดการใช้งาน?', r.name + ' จะเข้าระบบไม่ได้จนกว่าจะเปิดใหม่', 'ปิดการใช้งาน', 'btn-red');
+    if (!ok) { input.checked = true; return; }
+  }
+  setBusy(true, 'กำลังบันทึก...');
+  try { await call('setActive', { id: r.id, active: active }); await loadEmps(); }
+  catch (e) { input.checked = !active; toast(e.message, 'err'); }
+  finally { setBusy(false); }
+}
+
+/* ---------- ตั้งค่า ---------- */
+async function loadSettings() {
+  setBusy(true, 'กำลังโหลด...');
+  try {
+    const s = await call('getSettings');
+    $('sLat').value = s.factoryLat == null ? '' : s.factoryLat;
+    $('sLng').value = s.factoryLng == null ? '' : s.factoryLng;
+    $('sRadius').value = s.radius;
+    $('sDepts').value = s.departments.join(', ');
+    $('sStart').value = s.workStart;
+    $('sGrace').value = s.graceMin;
+    $('sEnd').value = s.workEnd;
+    $('sDays').innerHTML = DAY_NAMES.map((n, i) =>
+      '<label class="day"><input type="checkbox" value="' + (i + 1) + '"' + (s.workDays.indexOf(i + 1) >= 0 ? ' checked' : '') + '>' + n + '</label>').join('');
+    $('sDupBlock').checked = s.dupBlock;
+    $('sDupMin').value = s.dupMin;
+    $('sToken').value = '';
+    $('sToken').placeholder = s.hasToken ? 'ตั้งค่าแล้ว (เว้นว่างถ้าไม่เปลี่ยน)' : 'วาง Token จาก BotFather';
+    $('sChat').value = s.tgChatId;
+    $('sNIn').checked = s.notifyIn;
+    $('sNOut').checked = s.notifyOut;
+    $('sNSum').checked = s.notifySummary;
+    renderMap();
+  } catch (e) {
+    toast(e.message, 'err');
+  } finally {
+    setBusy(false);
+  }
+}
+function renderMap() {
+  const lat = parseFloat($('sLat').value), lng = parseFloat($('sLng').value);
+  const box = $('sMap');
+  if (isFinite(lat) && isFinite(lng)) {
+    box.classList.add('has-map');
+    box.innerHTML = '<iframe title="แผนที่ตำแหน่งโรงงาน" loading="lazy" src="https://maps.google.com/maps?q=' + lat + ',' + lng + '&z=17&output=embed"></iframe>';
+  } else {
+    box.classList.remove('has-map');
+    box.textContent = 'ยังไม่ได้ตั้งพิกัดโรงงาน';
+  }
+}
+function useHere() {
+  if (!navigator.geolocation) { toast('เครื่องนี้หาตำแหน่งไม่ได้', 'err'); return; }
+  setBusy(true, 'กำลังหาตำแหน่ง...');
+  navigator.geolocation.getCurrentPosition(
+    p => {
+      setBusy(false);
+      $('sLat').value = p.coords.latitude.toFixed(6);
+      $('sLng').value = p.coords.longitude.toFixed(6);
+      renderMap();
+      toast('ได้ตำแหน่งแล้ว (คลาดเคลื่อนประมาณ ' + Math.round(p.coords.accuracy) + ' ม.) อย่าลืมกดบันทึก', 'ok');
+    },
+    () => { setBusy(false); toast('หาตำแหน่งไม่ได้ กรุณาเปิด GPS และอนุญาตตำแหน่ง', 'err'); },
+    { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 }
+  );
+}
+async function saveSettings() {
+  const payload = {
+    factoryLat: $('sLat').value.trim(),
+    factoryLng: $('sLng').value.trim(),
+    radius: $('sRadius').value,
+    departments: $('sDepts').value,
+    workStart: $('sStart').value,
+    graceMin: $('sGrace').value,
+    workEnd: $('sEnd').value,
+    workDays: Array.from($('sDays').querySelectorAll('input:checked')).map(i => Number(i.value)),
+    dupBlock: $('sDupBlock').checked,
+    dupMin: $('sDupMin').value,
+    tgToken: $('sToken').value.trim(),
+    tgChatId: $('sChat').value.trim(),
+    notifyIn: $('sNIn').checked,
+    notifyOut: $('sNOut').checked,
+    notifySummary: $('sNSum').checked
+  };
+  setBusy(true, 'กำลังบันทึก...');
+  try {
+    await call('saveSettings', payload);
+    S.emps = null;
+    toast('บันทึกการตั้งค่าแล้ว', 'ok');
+  } catch (e) {
+    toast(e.message, 'err');
+  } finally {
+    setBusy(false);
+  }
+  loadSettings();
+}
+async function testTelegram() {
+  setBusy(true, 'กำลังส่งข้อความทดสอบ...');
+  try {
+    await call('testTelegram', { tgToken: $('sToken').value.trim(), tgChatId: $('sChat').value.trim() });
+    toast('ส่งข้อความทดสอบแล้ว ลองดูในกลุ่ม Telegram', 'ok');
+  } catch (e) {
+    toast(e.message, 'err');
+  } finally {
+    setBusy(false);
+  }
+}
+async function findChats() {
+  setBusy(true, 'กำลังค้นหา...');
+  let chats;
+  try { chats = await call('findChats', { tgToken: $('sToken').value.trim() }); }
+  catch (e) { toast(e.message, 'err'); return; }
+  finally { setBusy(false); }
+  if (!chats.length) {
+    showModal({ title: 'ยังไม่พบกลุ่ม', html: '<p>เพิ่มบอทเข้ากลุ่ม แล้วพิมพ์ข้อความอะไรก็ได้ในกลุ่ม 1 ครั้ง จากนั้นกดค้นหาอีกครั้ง</p>' });
+    return;
+  }
+  showModal({
+    title: 'เลือกกลุ่มที่จะรับแจ้งเตือน',
+    html: '<div class="col gap8">' + chats.map(c =>
+      '<div class="chat-item"><div><div class="b">' + esc(c.title || '(ไม่มีชื่อ)') + '</div><div class="hint">' + esc(c.id) + ' · ' + esc(c.type) + '</div></div>' +
+      '<button type="button" class="btn-sm" data-chat="' + esc(c.id) + '">เลือก</button></div>').join('') + '</div>'
+  });
+}
+
+/* ============================== กล่องข้อความ ============================== */
+function showModal(opt) {
+  $('mTitle').textContent = opt.title || '';
+  $('mBody').innerHTML = opt.html || '';
+  const foot = $('mFoot');
+  foot.innerHTML = '';
+  (opt.buttons || [{ label: 'ปิด', cls: 'btn-outline' }]).forEach(b => {
+    const el = document.createElement(b.href ? 'a' : 'button');
+    el.className = b.cls || 'btn-outline';
+    el.textContent = b.label;
+    if (b.href) {
+      el.href = b.href; el.target = '_blank'; el.rel = 'noopener';
+      el.addEventListener('click', closeModal);
+    } else {
+      el.type = 'button';
+      el.addEventListener('click', async () => {
+        if (b.onClick) {
+          el.disabled = true;
+          const keepOpen = await b.onClick();
+          el.disabled = false;
+          if (keepOpen === true) return;
+        }
+        closeModal();
+      });
+    }
+    foot.appendChild(el);
+  });
+  $('modal').hidden = false;
+}
+function closeModal() { $('modal').hidden = true; $('mBody').innerHTML = ''; }
+function confirmBox(title, text, okLabel, okCls) {
+  return new Promise(resolve => {
+    showModal({
+      title: title,
+      html: '<p>' + esc(text) + '</p>',
+      buttons: [
+        { label: 'ยกเลิก', cls: 'btn-outline', onClick: () => resolve(false) },
+        { label: okLabel, cls: okCls || 'btn-navy', onClick: () => resolve(true) }
+      ]
+    });
+  });
+}
+
+/* ============================== ผูกเหตุการณ์ ============================== */
+function bindEvents() {
+  $('keypad').addEventListener('click', e => {
+    const b = e.target.closest('[data-k]');
+    if (b) pressKey(b.dataset.k);
+  });
+  document.addEventListener('keydown', e => {
+    if (currentView() !== 'pin' || !$('modal').hidden) return;
+    if (/^\d$/.test(e.key)) pressKey(e.key);
+    else if (e.key === 'Backspace') pressKey('del');
+    else if (e.key === 'Enter') pressKey('ok');
+  });
+
+  $('logoutBtn').addEventListener('click', logout);
+  $('adminLogout').addEventListener('click', logout);
+  $('homeAdminBtn').addEventListener('click', openAdmin);
+  $('myCheckin').addEventListener('click', openHome);
+  $('bigBtn').addEventListener('click', openCamera);
+  $('retryGps').addEventListener('click', startGps);
+
+  $('camCancel').addEventListener('click', () => { show('home'); startClock(); renderHomeState(); });
+  $('camRetry').addEventListener('click', openCamera);
+  $('shutter').addEventListener('click', capture);
+  $('useBtn').addEventListener('click', submitAttendance);
+  $('retakeBtn').addEventListener('click', openCamera);
+  $('doneBack').addEventListener('click', () => { clearDoneTimer(); openHome(); });
+
+  document.querySelectorAll('.nav-btn[data-page]').forEach(b => b.addEventListener('click', () => goPage(b.dataset.page)));
+  $('dashDate').addEventListener('change', () => { S.dashFilter = 'all'; loadDash(); });
+  $('dashRefresh').addEventListener('click', loadDash);
+  $('dashSearch').addEventListener('input', renderDash);
+  $('dashChips').addEventListener('click', e => {
+    const b = e.target.closest('[data-filter]');
+    if (b) { S.dashFilter = b.dataset.filter; renderDash(); }
+  });
+  $('dashExport').addEventListener('click', () => {
+    const d = $('dashDate').value || bkkKey(nowMs());
+    doExport(d, d, '');
+  });
+
+  $('hSearch').addEventListener('click', loadHist);
+  $('hExport').addEventListener('click', () => doExport($('hFrom').value, $('hTo').value, $('hEmp').value));
+
+  $('eSearch').addEventListener('input', () => { if (S.emps) renderEmps(); });
+  $('eAdd').addEventListener('click', () => {
+    resetEmpForm();
+    $('eForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    $('fName').focus();
+  });
+  $('fSave').addEventListener('click', saveEmp);
+  $('fCancel').addEventListener('click', resetEmpForm);
+  $('eBody').addEventListener('click', e => {
+    const b = e.target.closest('button[data-act]');
+    if (!b) return;
+    const r = empById(b.dataset.id);
+    if (!r) return;
+    if (b.dataset.act === 'edit') editEmp(r);
+    else if (b.dataset.act === 'pin') askResetPin(r);
+    else if (b.dataset.act === 'dev') clearDev(r);
+  });
+  $('eBody').addEventListener('change', e => {
+    if (e.target.matches('input[data-act="active"]')) toggleActive(e.target);
+  });
+
+  $('sUseHere').addEventListener('click', useHere);
+  $('sLat').addEventListener('change', renderMap);
+  $('sLng').addEventListener('change', renderMap);
+  $('sSave').addEventListener('click', saveSettings);
+  $('sCancel').addEventListener('click', loadSettings);
+  $('sTest').addEventListener('click', testTelegram);
+  $('sFindChat').addEventListener('click', findChats);
+  $('mBody').addEventListener('click', e => {
+    const c = e.target.closest('[data-chat]');
+    if (c) { $('sChat').value = c.dataset.chat; closeModal(); toast('เลือกกลุ่มแล้ว อย่าลืมกดบันทึก', 'ok'); }
+  });
+
+  // เปิดรูป (ภาพรวม / ประวัติ)
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-photo]');
+    if (b && b.dataset.photo) showPhoto(b.dataset.photo, b.dataset.cap);
+  });
+
+  // กลับมาที่แอปอีกครั้ง: โหลดหน้าหลักใหม่
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState !== 'visible') return;
+    if (currentView() === 'home' && !S.busy) openHome();
+    if (currentView() === 'camera' && !S.stream) openCamera();
+  });
+}
+
+boot();
+</script>
+</body>
+</html>
