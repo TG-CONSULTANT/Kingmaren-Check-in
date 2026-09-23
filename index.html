@@ -275,6 +275,70 @@ svg{flex-shrink:0}
   .search{width:100%}
   .adm-h1{font-size:28px}
 }
+
+/* ===== ระบบค่าแรง ===== */
+.pr-page html, #modal html, .pr-page body, #modal body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body)}
+.pr-page button, #modal button, .pr-page input, #modal input, .pr-page select, #modal select, .pr-page textarea, #modal textarea{font-family:inherit;color:inherit}
+.pr-page button, #modal button{cursor:pointer}
+.pr-page a, #modal a{color:var(--blue)}
+.pr-page svg, #modal svg{flex-shrink:0}
+.pr-page h1, #modal h1, .pr-page h2, #modal h2{margin:0;font-family:var(--display);font-weight:600;color:var(--navy)}
+.pr-page h1, #modal h1{font-size:32px}
+.pr-page h2, #modal h2{font-size:21px}
+.pr-page /* login */
+.login, #modal /* login */
+.login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.pr-page /* layout */
+.app, #modal /* layout */
+.app{display:flex;min-height:100vh}
+.pr-page main, #modal main{flex:1;min-width:0;padding:28px 32px 44px;display:flex;flex-direction:column;gap:20px}
+.pr-page .page, #modal .page{display:flex;flex-direction:column;gap:20px}
+.pr-page .head, #modal .head{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap}
+.pr-page .sub, #modal .sub{font-size:17px;color:var(--muted)}
+.pr-page .tools, #modal .tools{display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap}
+.pr-page .card, #modal .card{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.pr-page .pad, #modal .pad{padding:16px 18px}
+.pr-page .row, #modal .row{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap}
+.pr-page .fld, #modal .fld{display:flex;flex-direction:column;gap:4px;font-size:15px;color:var(--muted)}
+.pr-page .fld input, #modal .fld input, .pr-page .fld select, #modal .fld select, .pr-page .fld textarea, #modal .fld textarea{height:46px;border:2px solid var(--field);border-radius:11px;padding:0 11px;font-size:17px;background:#fff;color:var(--ink);width:100%}
+.pr-page .fld textarea, #modal .fld textarea{height:auto;padding:9px 11px}
+.pr-page .btn, #modal .btn{min-height:46px;border-radius:11px;padding:0 15px;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:16px;font-weight:600;white-space:nowrap;border:2px solid var(--navy);background:#fff;color:var(--navy);text-decoration:none}
+.pr-page .btn.navy, #modal .btn.navy{background:var(--navy);color:#fff}
+.pr-page .btn.green, #modal .btn.green{background:var(--green);border-color:var(--green);color:#fff}
+.pr-page .btn.blue, #modal .btn.blue{border-color:var(--blue);color:var(--blue)}
+.pr-page .btn.red, #modal .btn.red{border-color:var(--red);color:var(--red)}
+.pr-page .btn.sm, #modal .btn.sm{min-height:38px;padding:0 11px;font-size:14px;font-weight:500;border-width:2px;border-color:var(--line2);color:var(--ink)}
+.pr-page .stats, #modal .stats{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+.pr-page .stat, #modal .stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:1px}
+.pr-page .stat span:first-child, #modal .stat span:first-child{font-size:16px;color:var(--muted)}
+.pr-page .stat b, #modal .stat b{font-family:var(--display);font-size:28px;font-weight:600;line-height:1.3}
+.pr-page .stat small, #modal .stat small{font-size:13px;color:var(--muted)}
+.pr-page .tbl-wrap, #modal .tbl-wrap{overflow-x:auto}
+.pr-page table, #modal table{width:100%;border-collapse:collapse;font-size:17px}
+.pr-page th, #modal th{background:var(--soft);text-align:left;font-size:15px;font-weight:600;color:var(--muted);padding:10px 12px;white-space:nowrap;position:sticky;top:0}
+.pr-page td, #modal td{padding:6px 12px;border-top:1px solid #EEE8DD;height:54px;vertical-align:middle}
+.pr-page td.r, #modal td.r, .pr-page th.r, #modal th.r{text-align:right}
+.pr-page td.c, #modal td.c, .pr-page th.c, #modal th.c{text-align:center}
+.pr-page tfoot td, #modal tfoot td{background:var(--soft);font-weight:700;border-top:2px solid var(--line2)}
+.pr-page .b, #modal .b{font-weight:600}
+.pr-page .cell, #modal .cell{width:70px;height:38px;border:2px solid var(--field);border-radius:8px;text-align:right;padding:0 6px;font-size:16px;background:#fff}
+.pr-page .cell.ot, #modal .cell.ot{width:52px;border-color:#E1D6BC;background:#FFFCF4}
+.pr-page .cell.changed, #modal .cell.changed{border-color:var(--green);background:#F1FAF4}
+.pr-page .pill, #modal .pill{display:inline-block;border-radius:999px;padding:3px 12px;font-size:15px;font-weight:600;white-space:nowrap}
+.pr-page .pill.ok, #modal .pill.ok{background:var(--green-bg);color:var(--green-ink)}
+.pr-page .pill.draft, #modal .pill.draft{background:var(--amber-bg);color:var(--amber-ink)}
+.pr-page .pill.closed, #modal .pill.closed{background:#E6EBF1;color:var(--navy)}
+.pr-page .pill.red, #modal .pill.red{background:var(--red-bg);color:var(--red-ink)}
+.pr-page .alert, #modal .alert{display:flex;align-items:center;gap:10px;border-radius:14px;padding:11px 15px;font-size:17px}
+.pr-page .alert.info, #modal .alert.info{background:#E4EEF7;border:1px solid #9FBEDA;color:#0B3A63}
+.pr-page .alert.warn, #modal .alert.warn{background:var(--amber-bg);border:1px solid #E4B368;color:var(--amber-ink)}
+.pr-page .alert.err, #modal .alert.err{background:var(--red-bg);border:1px solid #E0A19A;color:var(--red-ink)}
+.pr-page .empty, #modal .empty{text-align:center;color:var(--muted);height:90px}
+.pr-page .grid2, #modal .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.pr-page .grid3, #modal .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.pr-page .set-grid, #modal .set-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:start}
+.pr-page .hint, #modal .hint{font-size:14px;color:var(--muted);margin:0;line-height:1.5}
+@media (max-width:900px){.pr-page main, #modal main{padding:16px 12px 32px}.pr-page .stats, #modal .stats{grid-template-columns:repeat(2,minmax(0,1fr))}.pr-page .set-grid, #modal .set-grid, .pr-page .grid2, #modal .grid2, .pr-page .grid3, #modal .grid3{grid-template-columns:1fr}}
 </style>
 </head>
 <body data-view="loading">
@@ -319,6 +383,161 @@ svg{flex-shrink:0}
       <input type="checkbox" id="pinRemember" checked>
       <span>จำเครื่องนี้ไว้ ครั้งหน้าไม่ต้องใส่รหัส</span>
     </label>
+    <!-- งวดจ่าย -->
+    <div class="page pr-page" hidden id="p-pr-periods">
+      <div class="head">
+        <div><h1>งวดจ่ายค่าแรง</h1><div class="sub">รอบครึ่งเดือน — วันที่ 1–15 และ 16 ถึงสิ้นเดือน</div></div>
+        <div class="tools">
+          <button type="button" class="btn green" id="newPeriodBtn"><i data-ic="plus" data-s="19"></i><span>สร้างงวดใหม่</span></button>
+        </div>
+      </div>
+      <section class="card"><div class="tbl-wrap"><table>
+        <thead><tr><th>งวด</th><th>ช่วงวันที่</th><th class="r">จำนวนคน</th><th class="r">ยอดโอนสุทธิ</th><th>สถานะ</th><th>จัดการ</th></tr></thead>
+        <tbody id="periodBody"></tbody>
+      </table></div></section>
+    </div>
+
+    <!-- ค่าแรงรายวัน -->
+    <div class="page pr-page" hidden id="p-pr-daily" hidden>
+      <div class="head">
+        <div><h1>คีย์ค่าแรงรายวัน</h1><div class="sub" id="dailySub"></div></div>
+        <div class="tools">
+          <label class="fld"><span>งวด</span><select id="dailyPeriod" style="width:210px"></select></label>
+          <button type="button" class="btn blue" id="dailyImport"><i data-ic="refresh" data-s="19"></i><span>ดึงวันทำงานจากแอปลงเวลา</span></button>
+          <button type="button" class="btn" id="dailyFill"><i data-ic="grid" data-s="19"></i><span>เติมค่าแรงมาตรฐาน</span></button>
+          <button type="button" class="btn green" id="dailySave"><i data-ic="check" data-s="19"></i><span>บันทึก</span></button>
+        </div>
+      </div>
+      <div class="alert info"><i data-ic="warn" data-s="21"></i><span>ช่องสีขาว = ค่าแรง · ช่องสีครีม = ชั่วโมง OT · เว้นว่าง = ไม่มาทำงาน · ช่องที่แก้แล้วยังไม่บันทึกจะเป็นขอบเขียว</span></div>
+      <section class="card"><div class="tbl-wrap" id="dailyWrap"></div></section>
+    </div>
+
+    <!-- ค่าแรงเหมา -->
+    <div class="page pr-page" hidden id="p-pr-piece" hidden>
+      <div class="head">
+        <div><h1>ค่าแรงเหมา</h1><div class="sub" id="pieceSub"></div></div>
+        <div class="tools">
+          <label class="fld"><span>งวด</span><select id="piecePeriod" style="width:210px"></select></label>
+          <button type="button" class="btn blue" id="pieceImport"><i data-ic="refresh" data-s="19"></i><span>ดึงจากชีตบรรจุ</span></button>
+          <button type="button" class="btn" id="pieceRateAll"><i data-ic="calc" data-s="19"></i><span>ใส่อัตราทั้งตาราง</span></button>
+          <button type="button" class="btn" id="pieceAdd"><i data-ic="plus" data-s="19"></i><span>เพิ่มรายการเอง</span></button>
+          <button type="button" class="btn green" id="pieceSave"><i data-ic="check" data-s="19"></i><span>บันทึกอัตรา</span></button>
+        </div>
+      </div>
+      <section class="card"><div class="tbl-wrap"><table>
+        <thead><tr><th>วันที่</th><th>พนักงาน</th><th>งาน</th><th>LOT</th><th class="r">จำนวน</th><th>หน่วย</th><th class="r">อัตรา</th><th class="r">เป็นเงิน</th><th>หมายเหตุ</th><th>ที่มา</th><th></th></tr></thead>
+        <tbody id="pieceBody"></tbody>
+        <tfoot><tr><td colspan="7">รวม</td><td class="r" id="pieceTotal">0</td><td colspan="3"></td></tr></tfoot>
+      </table></div></section>
+    </div>
+
+    <!-- เพิ่ม/หัก และเงินกู้ -->
+    <div class="page pr-page" hidden id="p-pr-adjust" hidden>
+      <div class="head">
+        <div><h1>รายการเพิ่ม/หัก และเงินกู้</h1><div class="sub" id="adjSub"></div></div>
+        <div class="tools"><label class="fld"><span>งวด</span><select id="adjPeriod" style="width:210px"></select></label></div>
+      </div>
+      <section class="card">
+        <div class="pad" style="border-bottom:1px solid #EEE8DD"><h2>รายการเพิ่ม / หัก ในงวดนี้</h2></div>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>พนักงาน</th><th>ประเภท</th><th class="r">จำนวนเงิน</th><th>หมายเหตุ</th><th></th></tr></thead>
+          <tbody id="adjBody"></tbody>
+        </table></div>
+        <div class="pad row" style="border-top:1px solid #EEE8DD">
+          <label class="fld" style="width:220px"><span>พนักงาน</span><select id="adjEmp"></select></label>
+          <label class="fld" style="width:160px"><span>ประเภท</span><select id="adjType"></select></label>
+          <label class="fld" style="width:140px"><span>จำนวนเงิน</span><input type="number" id="adjAmount" min="0" step="0.01"></label>
+          <label class="fld" style="width:300px"><span>หมายเหตุ</span><input type="text" id="adjNote"></label>
+          <button type="button" class="btn navy" id="adjAdd"><i data-ic="plus" data-s="19"></i><span>เพิ่มรายการ</span></button>
+        </div>
+      </section>
+      <section class="card">
+        <div class="pad" style="border-bottom:1px solid #EEE8DD;display:flex;justify-content:space-between;align-items:center;gap:12px">
+          <h2>เงินกู้พนักงาน</h2>
+          <button type="button" class="btn green" id="loanAdd"><i data-ic="plus" data-s="19"></i><span>เพิ่มสัญญาเงินกู้</span></button>
+        </div>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>พนักงาน</th><th>วันที่กู้</th><th class="r">ยอดกู้</th><th class="r">หักงวดละ</th><th class="r">จ่ายแล้ว</th><th class="r">คงเหลือ</th><th class="r">หักงวดนี้</th><th>สถานะ</th><th></th></tr></thead>
+          <tbody id="loanBody"></tbody>
+        </table></div>
+      </section>
+    </div>
+
+    <!-- ปิดงวด -->
+    <div class="page pr-page" hidden id="p-pr-close" hidden>
+      <div class="head">
+        <div><h1>ตรวจสอบและปิดงวด</h1><div class="sub" id="closeSub"></div></div>
+        <div class="tools">
+          <label class="fld"><span>งวด</span><select id="closePeriod" style="width:210px"></select></label>
+          <button type="button" class="btn" id="slipAll"><i data-ic="print" data-s="19"></i><span>สร้างสลิปทั้งงวด</span></button>
+          <button type="button" class="btn" id="transferBtn"><i data-ic="download" data-s="19"></i><span>ใบสรุปโอนเงิน</span></button>
+          <button type="button" class="btn green" id="closeBtn"><i data-ic="lock" data-s="19"></i><span>ปิดงวด</span></button>
+          <button type="button" class="btn red" id="reopenBtn" hidden><span>เปิดงวดเพื่อแก้ไข</span></button>
+        </div>
+      </div>
+      <div id="closeAlert"></div>
+      <div class="stats" id="closeStats"></div>
+      <section class="card"><div class="tbl-wrap"><table>
+        <thead><tr><th>ชื่อ-สกุล</th><th class="r">วัน</th><th class="r">รายวัน</th><th class="r">โอที</th><th class="r">เหมา</th><th class="r">เพิ่ม</th><th class="r">ปกส.</th><th class="r">เงินกู้</th><th class="r">หักอื่น</th><th class="r">สุทธิ</th><th>ธนาคาร</th><th></th></tr></thead>
+        <tbody id="closeBody"></tbody>
+        <tfoot id="closeFoot"></tfoot>
+      </table></div></section>
+    </div>
+
+    <!-- พนักงาน -->
+    <div class="page pr-page" hidden id="p-pr-emps" hidden>
+      <div class="head">
+        <div><h1>ข้อมูลค่าแรงพนักงาน</h1><div class="sub">ค่าแรงต่อวัน รหัสบรรจุ บัญชีธนาคาร และประกันสังคม</div></div>
+      </div>
+      <div class="alert info"><i data-ic="warn" data-s="21"></i><span>รหัสบรรจุ คือเลขนำหน้าชื่อในชีตงานบรรจุ เช่น 54 พี่เล็ก ให้ใส่ 54 ถ้าไม่ใส่ ระบบจะดึงค่าแรงเหมาของคนนั้นไม่ได้</span></div>
+      <section class="card"><div class="tbl-wrap"><table>
+        <thead><tr><th>รหัส</th><th>ชื่อ-สกุล</th><th>ชื่อเล่น/แผนก</th><th class="r">ค่าแรง/วัน</th><th class="r">รหัสบรรจุ</th><th>เลขที่บัญชี</th><th>ธนาคาร</th><th class="c">ปกส.</th><th>ตำแหน่ง</th><th>วันเริ่มงาน</th><th></th></tr></thead>
+        <tbody id="empBody"></tbody>
+      </table></div></section>
+    </div>
+
+    <!-- ตั้งค่า -->
+    <div class="page pr-page" hidden id="p-pr-set" hidden>
+      <div class="head">
+        <div><h1>ตั้งค่าระบบ</h1><div class="sub">ข้อมูลบริษัท การคิด OT ประกันสังคม และอัตราค่าแรงเหมา</div></div>
+        <div class="tools"><button type="button" class="btn green" id="setSave"><i data-ic="check" data-s="19"></i><span>บันทึกการตั้งค่า</span></button></div>
+      </div>
+      <div class="set-grid">
+        <section class="card pad" style="display:flex;flex-direction:column;gap:12px">
+          <h2>ข้อมูลบริษัท (ใช้บนเอกสาร)</h2>
+          <label class="fld"><span>ชื่อบริษัท</span><input type="text" id="s_companyName"></label>
+          <label class="fld"><span>ที่อยู่</span><input type="text" id="s_companyAddress"></label>
+          <div class="grid2">
+            <label class="fld"><span>เบอร์โทร</span><input type="text" id="s_companyPhone"></label>
+            <label class="fld"><span>เลขประจำตัวผู้เสียภาษี</span><input type="text" id="s_taxId"></label>
+          </div>
+          <div class="grid2">
+            <label class="fld"><span>ผู้มีอำนาจลงนาม</span><input type="text" id="s_signerName"></label>
+            <label class="fld"><span>ตำแหน่ง</span><input type="text" id="s_signerTitle"></label>
+          </div>
+        </section>
+        <section class="card pad" style="display:flex;flex-direction:column;gap:12px">
+          <h2>การคำนวณ</h2>
+          <div class="grid3">
+            <label class="fld"><span>ชั่วโมงทำงาน/วัน</span><input type="number" id="s_hoursPerDay" min="1" max="12"></label>
+            <label class="fld"><span>ตัวคูณ OT</span><input type="number" id="s_otMultiplier" min="1" max="3" step="0.1"></label>
+            <label class="fld"><span>ปัดยอดสุทธิ</span><select id="s_roundNet"><option value="1">ปัดเป็นจำนวนเต็ม</option><option value="0">ไม่ปัด</option></select></label>
+          </div>
+          <div class="grid3">
+            <label class="fld"><span>ประกันสังคม (%)</span><input type="number" id="s_ssRate" min="0" max="10" step="0.5"></label>
+            <label class="fld"><span>สูงสุด/เดือน (บาท)</span><input type="number" id="s_ssMax" min="0"></label>
+            <label class="fld"><span>หักเมื่อไร</span><select id="s_ssMode"><option value="end">งวดสิ้นเดือนครั้งเดียว</option><option value="each">ทุกงวด งวดละครึ่ง</option></select></label>
+          </div>
+          <h2 style="margin-top:6px">ค่าแรงเหมา</h2>
+          <div class="grid3">
+            <label class="fld"><span>อัตราต่อหน่วย (บาท)</span><input type="number" id="s_pieceRate" min="0" step="0.01"></label>
+            <label class="fld"><span>หน่วย</span><input type="text" id="s_pieceUnit"></label>
+            <label class="fld"><span>ชื่องาน</span><input type="text" id="s_pieceJobName"></label>
+          </div>
+          <p class="hint" id="setHint"></p>
+        </section>
+      </div>
+    </div>
   </main>
 </section>
 
@@ -440,6 +659,14 @@ svg{flex-shrink:0}
       <button type="button" class="nav-btn" data-page="hist"><i data-ic="clock" data-s="22"></i><span>ประวัติการลงเวลา</span></button>
       <button type="button" class="nav-btn" data-page="emps"><i data-ic="users" data-s="22"></i><span>พนักงาน</span></button>
       <button type="button" class="nav-btn" data-page="set"><i data-ic="sliders" data-s="22"></i><span>ตั้งค่า</span></button>
+      <div class="nav-sep"></div>
+      <button type="button" class="nav-btn" data-page="pr-periods"><i data-ic="calendar" data-s="22"></i><span>งวดจ่ายค่าแรง</span></button>
+      <button type="button" class="nav-btn" data-page="pr-daily"><i data-ic="grid" data-s="22"></i><span>ค่าแรงรายวัน</span></button>
+      <button type="button" class="nav-btn" data-page="pr-piece"><i data-ic="box" data-s="22"></i><span>ค่าแรงเหมา</span></button>
+      <button type="button" class="nav-btn" data-page="pr-adjust"><i data-ic="calc" data-s="22"></i><span>เพิ่ม/หัก และเงินกู้</span></button>
+      <button type="button" class="nav-btn" data-page="pr-close"><i data-ic="check" data-s="22"></i><span>ตรวจสอบและปิดงวด</span></button>
+      <button type="button" class="nav-btn" data-page="pr-emps"><i data-ic="users" data-s="22"></i><span>ข้อมูลค่าแรงพนักงาน</span></button>
+      <button type="button" class="nav-btn" data-page="pr-set"><i data-ic="sliders" data-s="22"></i><span>ตั้งค่าระบบค่าแรง</span></button>
       <div class="nav-sep"></div>
       <button type="button" class="nav-btn" id="myCheckin"><i data-ic="camera" data-s="22"></i><span>ลงเวลาของฉัน</span></button>
     </div>
@@ -607,6 +834,7 @@ svg{flex-shrink:0}
   <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="mTitle">
     <h2 class="modal-t" id="mTitle"></h2>
     <div class="modal-b" id="mBody"></div>
+    <p id="mErr" style="margin:0;min-height:22px;color:var(--red);font-weight:600"></p>
     <div class="modal-f" id="mFoot"></div>
   </div>
 </div>
@@ -695,7 +923,7 @@ function rowMsg(cols, msg) { return '<tr><td colspan="' + cols + '" class="empty
 
 /* ============================== เรียกเซิร์ฟเวอร์ ============================== */
 // ใส่ URL ของ Apps Script Web app (ลงท้ายด้วย /exec)
-const API_URL = 'https://script.google.com/macros/s/AKfycbzO_MhLUXUc82adMq05tfb33xEX0QnQ0CVCdyl2_uatc8ihQNS8iYiwA7YEpbQP9vpc/exec';
+const API_URL = 'https://script.google.com/macros/s/ใส่_DEPLOYMENT_ID_ตรงนี้/exec';
 const API_TIMEOUT_MS = 60000;
 
 async function rpc(action, payload) {
@@ -1108,15 +1336,19 @@ function showDone(r) {
 function clearDoneTimer() { if (S.doneTimer) { clearInterval(S.doneTimer); S.doneTimer = null; } }
 
 /* ============================== ผู้บริหาร ============================== */
+let prReady = false;
 function openAdmin() {
   show('admin');
+  if (!prReady) { prReady = true; PR.init(); }
   $('adminName').textContent = S.user.name;
   if (!$('dashDate').value) $('dashDate').value = bkkKey(nowMs());
   goPage('dash');
 }
+const PR_PAGES = ['pr-periods', 'pr-daily', 'pr-piece', 'pr-adjust', 'pr-close', 'pr-emps', 'pr-set'];
 function goPage(p) {
   document.querySelectorAll('.nav-btn[data-page]').forEach(b => b.classList.toggle('active', b.dataset.page === p));
-  ['dash', 'hist', 'emps', 'set'].forEach(x => { $('p-' + x).hidden = x !== p; });
+  ['dash', 'hist', 'emps', 'set'].concat(PR_PAGES).forEach(x => { const el = $('p-' + x); if (el) el.hidden = x !== p; });
+  if (PR_PAGES.indexOf(p) >= 0) { PR.go(p); return; }
   ({ dash: loadDash, hist: initHist, emps: loadEmps, set: loadSettings })[p]();
 }
 
@@ -1333,7 +1565,7 @@ async function saveEmp() {
 function askResetPin(r) {
   showModal({
     title: 'รีเซ็ตรหัส: ' + r.name,
-    html: '<label class="fld"><span>รหัสใหม่ 4–6 หลัก</span><input type="text" id="mPin" inputmode="numeric" maxlength="6" autocomplete="off"></label><p class="inline-err" id="mErr"></p>',
+    html: '<label class="fld"><span>รหัสใหม่ 4–6 หลัก</span><input type="text" id="mPin" inputmode="numeric" maxlength="6" autocomplete="off"></label>',
     buttons: [
       { label: 'ยกเลิก', cls: 'btn-outline' },
       { label: 'บันทึกรหัสใหม่', cls: 'btn-navy', onClick: async () => {
@@ -1485,6 +1717,7 @@ async function findChats() {
 function showModal(opt) {
   $('mTitle').textContent = opt.title || '';
   $('mBody').innerHTML = opt.html || '';
+  if ($('mErr')) $('mErr').textContent = '';
   const foot = $('mFoot');
   foot.innerHTML = '';
   (opt.buttons || [{ label: 'ปิด', cls: 'btn-outline' }]).forEach(b => {
@@ -1613,6 +1846,470 @@ function bindEvents() {
     if (currentView() === 'camera' && !S.stream) openCamera();
   });
 }
+
+
+/* ไอคอนเพิ่มของระบบค่าแรง */
+Object.assign(ICONS, {
+  calendar: '<rect x="3.5" y="5" width="17" height="16" rx="2"/><path d="M8 3v4"/><path d="M16 3v4"/><path d="M3.5 10h17"/>',
+  box: '<path d="M3 8l9-4 9 4v8l-9 4-9-4z"/><path d="M3 8l9 4 9-4"/><path d="M12 12v8"/>',
+  calc: '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8"/><path d="M8 13h3"/><path d="M13 13h3"/><path d="M8 17h3"/><path d="M13 17h3"/>',
+  print: '<path d="M7 9V3h10v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M7 14h10v7H7z"/>',
+  warn: '<path d="M12 4l9 16H3z"/><path d="M12 10v4"/><path d="M12 17h.01"/>'
+});
+
+/* ================= ระบบค่าแรง (โมดูลแยก ใช้ฟังก์ชันกลางร่วมกัน) ================= */
+const appCall = (action, payload) => call(action, payload);
+const PR = (function () {
+
+/* ---------- เชื่อมกับแอปหลัก ---------- */
+async function call(action, payload, busyText){
+  setBusy(true, busyText || 'กำลังโหลด...');
+  try { return await appCall('pr' + action.charAt(0).toUpperCase() + action.slice(1), payload); }
+  finally { setBusy(false); }
+}
+function go(page){
+  const map = { 'pr-periods': renderPeriods, 'pr-daily': loadDaily, 'pr-piece': loadPiece,
+    'pr-adjust': loadAdjust, 'pr-close': loadClose, 'pr-emps': loadEmps, 'pr-set': loadSettings };
+  if (!S.periods.length) { loadPeriods().then(() => map[page]()); return; }
+  map[page]();
+}
+
+/* ---------- สถานะ ---------- */
+const $ = id => document.getElementById(id);
+const S = { page:'periods', periods:[], periodId:'', daily:null, dailyChanges:{},
+            piece:null, pieceChanges:{}, adj:null, loans:null, close:null, emps:null, settings:null, busy:0 };
+
+function money(n){const v=Math.round((Number(n)||0)*100)/100;return v.toLocaleString('en-US',{maximumFractionDigits:2});}
+/* ---------- เนวิเกต ---------- */
+function fillPeriodSelects(){
+  ['dailyPeriod','piecePeriod','adjPeriod','closePeriod'].forEach(id=>{
+    const sel=$(id), cur=sel.value||S.periodId;
+    sel.innerHTML=S.periods.map(p=>'<option value="'+esc(p.id)+'">'+esc(p.name)+' · '+esc(p.status)+'</option>').join('');
+    if(cur) sel.value=cur;
+    if(!sel.value&&S.periods[0]) sel.value=S.periods[0].id;
+  });
+}
+async function loadPeriods(){
+  const r=await call('listPeriods');
+  S.periods=r.periods;
+  if(!S.periodId) S.periodId=r.current||(r.periods[0]?r.periods[0].id:'');
+  fillPeriodSelects();
+}
+
+/* ---------- งวดจ่าย ---------- */
+function renderPeriods(){
+  const rows=S.periods;
+  $('periodBody').innerHTML = rows.length ? rows.map(p=>{
+    const cls = p.status==='ร่าง'?'draft':(p.status==='จ่ายแล้ว'?'ok':'closed');
+    return '<tr><td class="b">'+esc(p.name)+'</td><td>'+esc(p.text)+'</td>'+
+      '<td class="r">'+(p.people||'–')+'</td><td class="r b">'+(p.net?money(p.net):'–')+'</td>'+
+      '<td><span class="pill '+cls+'">'+esc(p.status)+'</span></td>'+
+      '<td><button type="button" class="btn sm" data-open="'+esc(p.id)+'">เปิดงวดนี้</button></td></tr>';
+  }).join('') : rowMsg(6,'ยังไม่มีงวดจ่าย กดปุ่ม "สร้างงวดใหม่"');
+}
+function askNewPeriod(){
+  const now=new Date();
+  showModal({title:'สร้างงวดใหม่',
+    html:'<div class="grid3">'+
+      '<label class="fld"><span>ปี (พ.ศ.)</span><input type="number" id="npYear" value="'+(now.getFullYear()+543)+'"></label>'+
+      '<label class="fld"><span>เดือน</span><select id="npMonth">'+['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'].map((m,i)=>'<option value="'+(i+1)+'"'+(i===now.getMonth()?' selected':'')+'>'+m+'</option>').join('')+'</select></label>'+
+      '<label class="fld"><span>ครึ่งเดือน</span><select id="npHalf"><option value="1">วันที่ 1–15</option><option value="2">วันที่ 16–สิ้นเดือน</option></select></label></div>',
+    buttons:[{label:'ยกเลิก'},{label:'สร้างงวด',cls:'btn navy',onClick:async()=>{
+      const y=Number($('npYear').value)-543, m=Number($('npMonth').value), h=Number($('npHalf').value);
+      try{ const r=await call('createPeriod',{year:y,month:m,half:h},'กำลังสร้าง...'); S.periodId=r.id; await loadPeriods(); renderPeriods(); toast('สร้างงวดแล้ว','ok'); }
+      catch(e){ $('mErr').textContent=e.message; return true; }
+    }}]});
+}
+
+/* ---------- ค่าแรงรายวัน ---------- */
+async function loadDaily(){
+  const id=$('dailyPeriod').value; if(!id) return;
+  S.dailyChanges={};
+  try{
+    const d=await call('getDaily',{id:id});
+    S.daily=d;
+    $('dailySub').textContent=d.period.text+' · '+d.period.status;
+    renderDaily();
+  }catch(e){ $('dailyWrap').innerHTML='<div class="pad">'+esc(e.message)+'</div>'; }
+}
+function renderDaily(){
+  const d=S.daily; if(!d) return;
+  const locked=d.period.status!=='ร่าง';
+  const head='<tr><th style="min-width:190px">พนักงาน</th><th class="r">ค่าแรง/วัน</th>'+
+    d.dates.map(x=>'<th class="c">'+Number(x.slice(8))+'</th>').join('')+
+    '<th class="r">วัน</th><th class="r">OT</th><th class="r">ค่าแรงรวม</th></tr>';
+  const body=d.rows.map(r=>{
+    let days=0,sum=0,ot=0;
+    const cells=d.dates.map(date=>{
+      const c=r.cells[date]||{};
+      if(c.wage){days++;sum+=c.wage;}
+      if(c.ot) ot+=c.ot;
+      return '<td class="c" style="padding:4px 3px">'+
+        '<input class="cell" type="number" min="0" step="1" value="'+(c.wage||'')+'" data-emp="'+esc(r.id)+'" data-date="'+date+'" data-k="wage"'+(locked?' disabled':'')+'>'+
+        '<input class="cell ot" type="number" min="0" step="0.5" value="'+(c.ot||'')+'" placeholder="OT" data-emp="'+esc(r.id)+'" data-date="'+date+'" data-k="ot"'+(locked?' disabled':'')+'>'+
+        '</td>';
+    }).join('');
+    return '<tr><td><div class="b">'+esc(r.name)+'</div><div style="font-size:14px;color:var(--muted)">'+esc(r.nick||'')+'</div></td>'+
+      '<td class="r">'+(r.rate?money(r.rate):'<span class="pill red">ยังไม่ตั้ง</span>')+'</td>'+cells+
+      '<td class="r b" data-sum="days-'+esc(r.id)+'">'+days+'</td>'+
+      '<td class="r" data-sum="ot-'+esc(r.id)+'">'+(ot||'')+'</td>'+
+      '<td class="r b" data-sum="wage-'+esc(r.id)+'">'+money(sum)+'</td></tr>';
+  }).join('');
+  $('dailyWrap').innerHTML='<table><thead>'+head+'</thead><tbody>'+(d.rows.length?body:rowMsg(d.dates.length+5,'ยังไม่มีพนักงาน'))+'</tbody></table>';
+  $('dailySave').disabled=locked; $('dailyFill').disabled=locked; $('dailyImport').disabled=locked;
+}
+function onDailyInput(e){
+  const el=e.target; if(!el.dataset.emp) return;
+  el.classList.add('changed');
+  const key=el.dataset.emp+'|'+el.dataset.date;
+  const cur=S.dailyChanges[key]||{empId:el.dataset.emp,date:el.dataset.date};
+  const other=document.querySelector('input[data-emp="'+CSS.escape(el.dataset.emp)+'"][data-date="'+el.dataset.date+'"][data-k="'+(el.dataset.k==='wage'?'ot':'wage')+'"]');
+  cur[el.dataset.k]=el.value===''?'':Number(el.value);
+  if(other) cur[el.dataset.k==='wage'?'ot':'wage']=other.value===''?'':Number(other.value);
+  S.dailyChanges[key]=cur;
+}
+async function saveDaily(){
+  const changes=Object.keys(S.dailyChanges).map(k=>S.dailyChanges[k]);
+  if(!changes.length){ toast('ไม่มีการแก้ไข'); return; }
+  try{
+    const r=await call('saveDaily',{id:$('dailyPeriod').value,changes:changes},'กำลังบันทึก...');
+    toast('บันทึกแล้ว '+r.saved+' ช่อง','ok');
+    await loadDaily();
+  }catch(e){ toast(e.message,'err'); }
+}
+function fillStandard(){
+  const d=S.daily; if(!d) return;
+  d.rows.forEach(r=>{
+    if(!r.rate) return;
+    d.dates.forEach(date=>{
+      const el=document.querySelector('input[data-emp="'+CSS.escape(r.id)+'"][data-date="'+date+'"][data-k="wage"]');
+      if(el&&!el.value){ el.value=r.rate; el.dispatchEvent(new Event('input',{bubbles:true})); }
+    });
+  });
+  toast('เติมค่าแรงมาตรฐานแล้ว อย่าลืมกดบันทึก');
+}
+
+/* ---------- ค่าแรงเหมา ---------- */
+async function loadPiece(){
+  const id=$('piecePeriod').value; if(!id) return;
+  S.pieceChanges={};
+  try{
+    const d=await call('getPiece',{id:id});
+    S.piece=d;
+    $('pieceSub').textContent=d.period.text+' · อัตราตั้งต้น '+money(d.defaultRate)+' บาท/'+d.unit;
+    const locked=d.period.status!=='ร่าง';
+    ['pieceImport','pieceRateAll','pieceAdd','pieceSave'].forEach(x=>{$(x).disabled=locked;});
+    $('pieceBody').innerHTML = d.rows.length ? d.rows.map(r=>
+      '<tr><td>'+esc(r.date)+'</td><td class="b">'+esc(r.name)+'</td><td>'+esc(r.job)+'</td><td>'+esc(r.lot)+'</td>'+
+      '<td class="r b">'+money(r.qty)+'</td><td>'+esc(r.unit)+'</td>'+
+      '<td class="r"><input class="cell" type="number" min="0" step="0.01" value="'+r.rate+'" data-row="'+r.row+'" data-qty="'+r.qty+'"'+(locked?' disabled':'')+'></td>'+
+      '<td class="r b" data-amt="'+r.row+'">'+money(r.amount)+'</td>'+
+      '<td>'+esc(r.note)+'</td><td><span class="pill '+(r.src==='คีย์เอง'?'closed':'ok')+'">'+esc(r.src)+'</span></td>'+
+      '<td><button type="button" class="btn sm" data-del-piece="'+r.row+'"'+(locked?' disabled':'')+'>ลบ</button></td></tr>'
+    ).join('') : rowMsg(11,'ยังไม่มีรายการ กดปุ่ม "ดึงจากชีตบรรจุ"');
+    $('pieceTotal').textContent=money(d.total);
+  }catch(e){ $('pieceBody').innerHTML=rowMsg(11,esc(e.message)); }
+}
+function onPieceInput(e){
+  const el=e.target; if(!el.dataset.row) return;
+  const rate=Number(el.value)||0, qty=Number(el.dataset.qty)||0;
+  S.pieceChanges[el.dataset.row]={row:Number(el.dataset.row),rate:rate};
+  el.classList.add('changed');
+  const cell=document.querySelector('[data-amt="'+el.dataset.row+'"]');
+  if(cell) cell.textContent=money(qty*rate);
+  let total=0;
+  document.querySelectorAll('[data-amt]').forEach(c=>{ total+=Number(String(c.textContent).replace(/,/g,''))||0; });
+  $('pieceTotal').textContent=money(total);
+}
+async function importPiece(){
+  try{
+    const r=await call('importPiece',{id:$('piecePeriod').value},'กำลังดึงข้อมูล...');
+    let msg='ดึงเข้ามา '+r.added+' รายการ'+(r.skipped?' (ข้ามที่เคยดึงแล้ว '+r.skipped+')':'');
+    if(r.unmatched.length){
+      showModal({title:'ดึงข้อมูลแล้ว แต่มีชื่อที่จับคู่ไม่ได้',
+        html:'<p>'+esc(msg)+'</p><p>ชื่อต่อไปนี้ยังไม่มีรหัสบรรจุในระบบ ไปผูกที่เมนู "พนักงาน" แล้วดึงซ้ำอีกครั้ง</p><ul>'+
+          r.unmatched.map(u=>'<li>'+esc(u.name)+' ('+u.count+' รายการ)</li>').join('')+'</ul>'});
+    }else toast(msg,'ok');
+    await loadPiece();
+  }catch(e){ toast(e.message,'err'); }
+}
+function askRateAll(){
+  showModal({title:'ใส่อัตราเดียวกันทั้งตาราง',
+    html:'<label class="fld"><span>อัตราต่อ '+esc(S.piece?S.piece.unit:'หน่วย')+' (บาท)</span><input type="number" id="rateAll" min="0" step="0.01" value="'+(S.piece?S.piece.defaultRate:0)+'"></label>',
+    buttons:[{label:'ยกเลิก'},{label:'ใส่ให้ทุกแถว',cls:'btn navy',onClick:()=>{
+      const v=Number($('rateAll').value)||0;
+      document.querySelectorAll('#pieceBody input[data-row]').forEach(el=>{ el.value=v; el.dispatchEvent(new Event('input',{bubbles:true})); });
+      toast('ใส่อัตราแล้ว อย่าลืมกดบันทึกอัตรา');
+    }}]});
+}
+async function savePiece(){
+  const changes=Object.keys(S.pieceChanges).map(k=>S.pieceChanges[k]);
+  if(!changes.length){ toast('ไม่มีการแก้ไข'); return; }
+  try{ const r=await call('savePiece',{id:$('piecePeriod').value,changes:changes},'กำลังบันทึก...');
+    toast('บันทึกแล้ว '+r.saved+' รายการ','ok'); await loadPiece(); }
+  catch(e){ toast(e.message,'err'); }
+}
+function askAddPiece(){
+  const d=S.piece; if(!d) return;
+  showModal({title:'เพิ่มรายการค่าแรงเหมา',
+    html:'<div class="grid2">'+
+      '<label class="fld"><span>พนักงาน</span><select id="apEmp">'+d.employees.map(e=>'<option value="'+esc(e.id)+'">'+esc(e.name)+'</option>').join('')+'</select></label>'+
+      '<label class="fld"><span>วันที่</span><input type="date" id="apDate" value="'+d.period.from+'" min="'+d.period.from+'" max="'+d.period.to+'"></label>'+
+      '<label class="fld"><span>งาน</span><input type="text" id="apJob" value="'+esc(d.rows.length?d.rows[0].job:'')+'"></label>'+
+      '<label class="fld"><span>LOT</span><input type="text" id="apLot"></label>'+
+      '<label class="fld"><span>จำนวน</span><input type="number" id="apQty" min="0" step="0.01"></label>'+
+      '<label class="fld"><span>อัตราต่อหน่วย</span><input type="number" id="apRate" min="0" step="0.01" value="'+d.defaultRate+'"></label></div>',
+    buttons:[{label:'ยกเลิก'},{label:'เพิ่มรายการ',cls:'btn navy',onClick:async()=>{
+      try{ await call('addPiece',{id:d.period.id,empId:$('apEmp').value,date:$('apDate').value,job:$('apJob').value,
+            lot:$('apLot').value,qty:$('apQty').value,rate:$('apRate').value},'กำลังบันทึก...');
+        toast('เพิ่มรายการแล้ว','ok'); await loadPiece(); }
+      catch(e){ $('mErr').textContent=e.message; return true; }
+    }}]});
+}
+
+/* ---------- เพิ่ม/หัก และเงินกู้ ---------- */
+async function loadAdjust(){
+  const id=$('adjPeriod').value; if(!id) return;
+  try{
+    const d=await call('getAdjust',{id:id});
+    S.adj=d;
+    $('adjSub').textContent=d.period.text+' · '+d.period.status;
+    const locked=d.period.status!=='ร่าง';
+    $('adjEmp').innerHTML=d.employees.map(e=>'<option value="'+esc(e.id)+'">'+esc(e.name)+'</option>').join('');
+    $('adjType').innerHTML=d.types.map(t=>'<option>'+esc(t)+'</option>').join('');
+    $('adjAdd').disabled=locked;
+    $('adjBody').innerHTML = d.rows.length ? d.rows.map(r=>{
+      const minus=r.type==='หักอื่น';
+      return '<tr><td class="b">'+esc(r.name)+'</td><td><span class="pill '+(minus?'red':'ok')+'">'+esc(r.type)+'</span></td>'+
+        '<td class="r b">'+(minus?'− ':'+ ')+money(r.amount)+'</td><td>'+esc(r.note)+'</td>'+
+        '<td><button type="button" class="btn sm" data-del-adj="'+r.row+'"'+(locked?' disabled':'')+'>ลบ</button></td></tr>';
+    }).join('') : rowMsg(5,'ยังไม่มีรายการในงวดนี้');
+    await loadLoans();
+  }catch(e){ $('adjBody').innerHTML=rowMsg(5,esc(e.message)); }
+}
+async function loadLoans(){
+  const id=$('adjPeriod').value;
+  const d=await call('getLoans',{id:id});
+  S.loans=d;
+  const locked=d.period&&d.period.status!=='ร่าง';
+  $('loanBody').innerHTML = d.rows.length ? d.rows.map(r=>{
+    const auto=r.thisPeriod===null?Math.min(r.perPeriod,r.left):r.thisPeriod;
+    return '<tr><td class="b">'+esc(r.name)+'</td><td>'+esc(r.date)+'</td>'+
+      '<td class="r">'+money(r.total)+'</td><td class="r">'+money(r.perPeriod)+'</td>'+
+      '<td class="r">'+money(r.paid)+'</td><td class="r b">'+money(r.left)+'</td>'+
+      '<td class="r"><input class="cell" type="number" min="0" step="1" value="'+(r.status==='กำลังผ่อน'?auto:0)+'" data-loan="'+esc(r.id)+'"'+(locked?' disabled':'')+'></td>'+
+      '<td><span class="pill '+(r.left<=0?'ok':'draft')+'">'+esc(r.left<=0?'ปิดยอดแล้ว':r.status)+'</span></td>'+
+      '<td><button type="button" class="btn sm" data-edit-loan="'+esc(r.id)+'">แก้ไข</button></td></tr>';
+  }).join('') : rowMsg(9,'ยังไม่มีสัญญาเงินกู้');
+}
+function askLoan(loan){
+  const emps=(S.adj&&S.adj.employees)||[];
+  showModal({title:loan?'แก้ไขสัญญาเงินกู้':'เพิ่มสัญญาเงินกู้',
+    html:'<div class="grid2">'+
+      '<label class="fld"><span>พนักงาน</span><select id="lnEmp">'+emps.map(e=>'<option value="'+esc(e.id)+'"'+(loan&&loan.empId===e.id?' selected':'')+'>'+esc(e.name)+'</option>').join('')+'</select></label>'+
+      '<label class="fld"><span>วันที่กู้</span><input type="date" id="lnDate" value="'+(loan?loan.date:'')+'"></label>'+
+      '<label class="fld"><span>ยอดกู้</span><input type="number" id="lnTotal" min="0" step="1" value="'+(loan?loan.total:'')+'"></label>'+
+      '<label class="fld"><span>หักงวดละ</span><input type="number" id="lnPer" min="0" step="1" value="'+(loan?loan.perPeriod:'')+'"></label>'+
+      '<label class="fld"><span>สถานะ</span><select id="lnStatus"><option>กำลังผ่อน</option><option>พักการหัก</option><option>ปิดยอดแล้ว</option></select></label>'+
+      '<label class="fld"><span>หมายเหตุ</span><input type="text" id="lnNote" value="'+(loan?esc(loan.note):'')+'"></label></div>',
+    buttons:[{label:'ยกเลิก'},{label:'บันทึก',cls:'btn navy',onClick:async()=>{
+      try{ await call('saveLoan',{row:loan?loan.row:0,empId:$('lnEmp').value,date:$('lnDate').value,
+            total:$('lnTotal').value,perPeriod:$('lnPer').value,status:$('lnStatus').value,note:$('lnNote').value},'กำลังบันทึก...');
+        toast('บันทึกแล้ว','ok'); await loadLoans(); }
+      catch(e){ $('mErr').textContent=e.message; return true; }
+    }}]});
+  if(loan) $('lnStatus').value=loan.status||'กำลังผ่อน';
+}
+
+/* ---------- ปิดงวด ---------- */
+async function loadClose(){
+  const id=$('closePeriod').value; if(!id) return;
+  try{
+    const d=await call('getSummary',{id:id},'กำลังคำนวณ...');
+    S.close=d;
+    $('closeSub').textContent=d.period.text+' · '+d.period.status;
+    const draft=d.period.status==='ร่าง';
+    $('closeBtn').hidden=!draft; $('reopenBtn').hidden=draft;
+    $('closeAlert').innerHTML = d.warnings.length
+      ? '<div class="alert err">'+ic('warn',21)+'<span>ยังไม่มีเลขบัญชีธนาคาร '+d.warnings.length+' คน: '+esc(d.warnings.join(', '))+'</span></div>' : '';
+    const t=d.totals;
+    $('closeStats').innerHTML=[
+      ['ค่าแรงรายวัน',money(t.daily),t.days+' วันรวม'],
+      ['ค่าแรงเหมา',money(t.piece),''],
+      ['โอที',money(t.ot),''],
+      ['รายการเพิ่ม',money(t.add),''],
+      ['รายการหัก',money(t.ss+t.loan+t.other),'ปกส. '+money(t.ss)+' · กู้ '+money(t.loan)],
+      ['ยอดโอนสุทธิ',money(t.net),'บาท']
+    ].map(s=>'<div class="stat"><span>'+s[0]+'</span><b>'+s[1]+'</b><small>'+s[2]+'</small></div>').join('');
+    $('closeBody').innerHTML = d.rows.length ? d.rows.map(r=>
+      '<tr><td class="b">'+esc(r.name)+'</td><td class="r">'+r.days+'</td><td class="r">'+money(r.daily)+'</td>'+
+      '<td class="r">'+money(r.ot)+'</td><td class="r">'+money(r.piece)+'</td><td class="r">'+money(r.add)+'</td>'+
+      '<td class="r">'+money(r.ss)+'</td><td class="r">'+money(r.loan)+'</td><td class="r">'+money(r.other)+'</td>'+
+      '<td class="r b">'+money(r.net)+'</td><td>'+(r.bank?esc(r.bank)+' '+esc(r.acct):'<span class="pill red">ยังไม่มีบัญชี</span>')+'</td>'+
+      '<td><button type="button" class="btn sm" data-slip="'+esc(r.id)+'">สลิป</button></td></tr>'
+    ).join('') : rowMsg(12,'ยังไม่มีข้อมูลในงวดนี้');
+    $('closeFoot').innerHTML='<tr><td>รวม '+d.rows.length+' คน</td><td class="r">'+t.days+'</td><td class="r">'+money(t.daily)+'</td>'+
+      '<td class="r">'+money(t.ot)+'</td><td class="r">'+money(t.piece)+'</td><td class="r">'+money(t.add)+'</td>'+
+      '<td class="r">'+money(t.ss)+'</td><td class="r">'+money(t.loan)+'</td><td class="r">'+money(t.other)+'</td>'+
+      '<td class="r">'+money(t.net)+'</td><td colspan="2"></td></tr>';
+  }catch(e){ $('closeBody').innerHTML=rowMsg(12,esc(e.message)); }
+}
+async function makeSlip(empId){
+  try{
+    const r=await call('makeSlips',{id:$('closePeriod').value,empId:empId||''},'กำลังสร้างสลิป...');
+    showModal({title:'สร้างสลิปแล้ว',html:'<p>'+esc(r.name)+'</p><p>'+r.count+' ฉบับ</p>',
+      buttons:[{label:'ปิด'},{label:'เปิดไฟล์',cls:'btn green',href:r.url}]});
+  }catch(e){ toast(e.message,'err'); }
+}
+
+/* ---------- พนักงาน ---------- */
+async function loadEmps(){
+  try{
+    const d=await call('listEmployees');
+    S.emps=d;
+    $('empBody').innerHTML = d.rows.length ? d.rows.map(r=>
+      '<tr'+(r.active?'':' style="color:#80868C"')+'><td>'+esc(r.id)+'</td><td class="b">'+esc(r.name)+'</td><td>'+esc(r.nick)+'</td>'+
+      '<td class="r">'+(r.rate?money(r.rate):'<span class="pill red">ยังไม่ตั้ง</span>')+'</td>'+
+      '<td class="r">'+(r.pcode||'<span class="pill draft">ยังไม่ผูก</span>')+'</td>'+
+      '<td>'+esc(r.acct||'–')+'</td><td>'+esc(r.bank||'–')+'</td><td class="c">'+(r.ss?'มี':'–')+'</td>'+
+      '<td>'+esc(r.pos||'–')+'</td><td>'+esc(r.start||'–')+'</td>'+
+      '<td><button type="button" class="btn sm" data-edit-emp="'+esc(r.id)+'">แก้ไข</button></td></tr>'
+    ).join('') : rowMsg(11,'ยังไม่มีพนักงานในระบบ');
+  }catch(e){ $('empBody').innerHTML=rowMsg(11,esc(e.message)); }
+}
+function askEditEmp(id){
+  const r=S.emps.rows.find(x=>x.id===id); if(!r) return;
+  showModal({title:'ข้อมูลค่าแรง: '+r.name,
+    html:'<div class="grid2">'+
+      '<label class="fld"><span>ค่าแรงต่อวัน</span><input type="number" id="eeRate" min="0" step="1" value="'+(r.rate||'')+'"></label>'+
+      '<label class="fld"><span>รหัสบรรจุ (เลขหน้าชื่อ)</span><input type="text" id="eePcode" value="'+esc(r.pcode)+'"></label>'+
+      '<label class="fld"><span>เลขที่บัญชี</span><input type="text" id="eeAcct" value="'+esc(r.acct)+'"></label>'+
+      '<label class="fld"><span>ธนาคาร</span><input type="text" id="eeBank" value="'+esc(r.bank)+'"></label>'+
+      '<label class="fld"><span>ตำแหน่ง</span><input type="text" id="eePos" value="'+esc(r.pos)+'"></label>'+
+      '<label class="fld"><span>วันเริ่มงาน</span><input type="date" id="eeStart" value="'+esc(r.start)+'"></label></div>'+
+      '<label style="display:flex;align-items:center;gap:10px;font-size:17px"><input type="checkbox" id="eeSs" style="width:22px;height:22px;accent-color:var(--green)"'+(r.ss?' checked':'')+'><span>มีประกันสังคม</span></label>',
+    buttons:[{label:'ยกเลิก'},{label:'บันทึก',cls:'btn navy',onClick:async()=>{
+      try{ await call('saveEmployeePay',{id:id,rate:$('eeRate').value||0,pcode:$('eePcode').value,acct:$('eeAcct').value,
+            bank:$('eeBank').value,pos:$('eePos').value,start:$('eeStart').value,ss:$('eeSs').checked},'กำลังบันทึก...');
+        toast('บันทึกแล้ว','ok'); await loadEmps(); }
+      catch(e){ $('mErr').textContent=e.message; return true; }
+    }}]});
+}
+
+/* ---------- ตั้งค่า ---------- */
+const SET_KEYS=['companyName','companyAddress','companyPhone','taxId','signerName','signerTitle',
+  'hoursPerDay','otMultiplier','pieceRate','pieceUnit','pieceJobName','ssRate','ssMax','ssMode','roundNet'];
+async function loadSettings(){
+  try{
+    const s=await call('getSettings');
+    S.settings=s;
+    SET_KEYS.forEach(k=>{ const el=$('s_'+k); if(!el) return;
+      el.value = k==='roundNet' ? (s[k]?'1':'0') : s[k]; });
+    $('setHint').textContent='ค่าแรงเหมาดึงจากแท็บ '+s.pieceSheetName+' ของชีตงานบรรจุ'+
+      (s.hasPdfFolder?'':' · ยังไม่ได้ตั้งโฟลเดอร์ PDF ในโค้ด จะสร้างสลิปไม่ได้');
+  }catch(e){ toast(e.message,'err'); }
+}
+async function saveSettings(){
+  const p={};
+  SET_KEYS.forEach(k=>{ const el=$('s_'+k); if(el) p[k]=el.value; });
+  try{ await call('saveSettings',p,'กำลังบันทึก...'); toast('บันทึกการตั้งค่าแล้ว','ok'); await loadSettings(); }
+  catch(e){ toast(e.message,'err'); }
+}
+
+/* ---------- events ---------- */
+function init(){
+
+  $('newPeriodBtn').addEventListener('click',askNewPeriod);
+  $('periodBody').addEventListener('click',e=>{
+    const b=e.target.closest('[data-open]'); if(!b) return;
+    S.periodId=b.dataset.open; fillPeriodSelects();
+    ['dailyPeriod','piecePeriod','adjPeriod','closePeriod'].forEach(id=>{ $(id).value=S.periodId; });
+    window.goPage('pr-daily');
+  });
+
+  $('dailyPeriod').addEventListener('change',loadDaily);
+  $('dailyWrap').addEventListener('input',onDailyInput);
+  $('dailySave').addEventListener('click',saveDaily);
+  $('dailyFill').addEventListener('click',fillStandard);
+  $('dailyImport').addEventListener('click',async()=>{
+    try{ const r=await call('importAttendance',{id:$('dailyPeriod').value},'กำลังดึงข้อมูล...');
+      toast(r.filled?('เติมให้ '+r.filled+' ช่อง'):'ไม่มีช่องว่างที่ต้องเติม','ok'); await loadDaily(); }
+    catch(e){ toast(e.message,'err'); }
+  });
+
+  $('piecePeriod').addEventListener('change',loadPiece);
+  $('pieceBody').addEventListener('input',onPieceInput);
+  $('pieceBody').addEventListener('click',async e=>{
+    const b=e.target.closest('[data-del-piece]'); if(!b) return;
+    if(!await confirmBox('ลบรายการนี้?','ลบแล้วเรียกคืนไม่ได้ แต่กดดึงจากชีตบรรจุใหม่ได้','ลบรายการ','btn red')) return;
+    try{ await call('deletePiece',{id:$('piecePeriod').value,row:b.dataset.delPiece},'กำลังลบ...'); await loadPiece(); }
+    catch(e){ toast(e.message,'err'); }
+  });
+  $('pieceImport').addEventListener('click',importPiece);
+  $('pieceRateAll').addEventListener('click',askRateAll);
+  $('pieceAdd').addEventListener('click',askAddPiece);
+  $('pieceSave').addEventListener('click',savePiece);
+
+  $('adjPeriod').addEventListener('change',loadAdjust);
+  $('adjAdd').addEventListener('click',async()=>{
+    try{ await call('addAdjust',{id:$('adjPeriod').value,empId:$('adjEmp').value,type:$('adjType').value,
+          amount:$('adjAmount').value,note:$('adjNote').value},'กำลังบันทึก...');
+      $('adjAmount').value=''; $('adjNote').value=''; toast('เพิ่มรายการแล้ว','ok'); await loadAdjust(); }
+    catch(e){ toast(e.message,'err'); }
+  });
+  $('adjBody').addEventListener('click',async e=>{
+    const b=e.target.closest('[data-del-adj]'); if(!b) return;
+    if(!await confirmBox('ลบรายการนี้?','','ลบรายการ','btn red')) return;
+    try{ await call('deleteAdjust',{id:$('adjPeriod').value,row:b.dataset.delAdj},'กำลังลบ...'); await loadAdjust(); }
+    catch(e){ toast(e.message,'err'); }
+  });
+  $('loanAdd').addEventListener('click',()=>askLoan(null));
+  $('loanBody').addEventListener('click',e=>{
+    const b=e.target.closest('[data-edit-loan]'); if(!b) return;
+    askLoan(S.loans.rows.find(x=>x.id===b.dataset.editLoan));
+  });
+  $('loanBody').addEventListener('change',async e=>{
+    const el=e.target.closest('[data-loan]'); if(!el) return;
+    try{ await call('saveLoanDeduction',{id:$('adjPeriod').value,loanId:el.dataset.loan,amount:el.value||0},'กำลังบันทึก...');
+      toast('บันทึกยอดหักงวดนี้แล้ว','ok'); await loadLoans(); }
+    catch(e){ toast(e.message,'err'); await loadLoans(); }
+  });
+
+  $('closePeriod').addEventListener('change',loadClose);
+  $('closeBody').addEventListener('click',e=>{
+    const b=e.target.closest('[data-slip]'); if(b) makeSlip(b.dataset.slip);
+  });
+  $('slipAll').addEventListener('click',()=>makeSlip(''));
+  $('transferBtn').addEventListener('click',async()=>{
+    try{ const r=await call('exportTransfer',{id:$('closePeriod').value},'กำลังสร้างไฟล์...');
+      showModal({title:'สร้างใบสรุปโอนเงินแล้ว',html:'<p>'+esc(r.name)+'</p><p>'+r.count+' คน</p>',
+        buttons:[{label:'ปิด'},{label:'เปิดไฟล์',cls:'btn green',href:r.url}]}); }
+    catch(e){ toast(e.message,'err'); }
+  });
+  $('closeBtn').addEventListener('click',async()=>{
+    if(!await confirmBox('ปิดงวดนี้?','ปิดแล้วจะแก้ไขข้อมูลในงวดไม่ได้ จนกว่าจะกดเปิดงวดอีกครั้ง','ปิดงวด','btn green')) return;
+    try{ const r=await call('closePeriod',{id:$('closePeriod').value},'กำลังปิดงวด...');
+      toast('ปิดงวดแล้ว '+r.people+' คน ยอดโอน '+money(r.net)+' บาท','ok');
+      await loadPeriods(); await loadClose(); }
+    catch(e){ toast(e.message,'err'); }
+  });
+  $('reopenBtn').addEventListener('click',async()=>{
+    if(!await confirmBox('เปิดงวดเพื่อแก้ไข?','ยอดที่สรุปไว้จะถูกคำนวณใหม่ตอนปิดงวดอีกครั้ง','เปิดงวด','btn red')) return;
+    try{ await call('reopenPeriod',{id:$('closePeriod').value},'กำลังเปิดงวด...');
+      await loadPeriods(); await loadClose(); toast('เปิดงวดแล้ว','ok'); }
+    catch(e){ toast(e.message,'err'); }
+  });
+
+  $('empBody').addEventListener('click',e=>{
+    const b=e.target.closest('[data-edit-emp]'); if(b) askEditEmp(b.dataset.editEmp);
+  });
+  $('setSave').addEventListener('click',saveSettings);
+}
+
+
+
+  return { go: go, init: init, loadPeriods: loadPeriods };
+})();
 
 boot();
 </script>
