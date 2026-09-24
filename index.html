@@ -339,6 +339,15 @@ svg{flex-shrink:0}
 .pr-page .set-grid, #modal .set-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:start}
 .pr-page .hint, #modal .hint{font-size:14px;color:var(--muted);margin:0;line-height:1.5}
 @media (max-width:900px){.pr-page main, #modal main{padding:16px 12px 32px}.pr-page .stats, #modal .stats{grid-template-columns:repeat(2,minmax(0,1fr))}.pr-page .set-grid, #modal .set-grid, .pr-page .grid2, #modal .grid2, .pr-page .grid3, #modal .grid3{grid-template-columns:1fr}}
+
+/* ===== ปรับแถบเมนูหลังรวมสองระบบ ===== */
+.side{overflow-y:auto;padding:20px 14px;gap:4px}
+.side-brand{padding:0 6px 16px}
+.nav-btn{min-height:46px;font-size:17px;padding:0 12px;gap:10px}
+.nav-btn span{line-height:1.25}
+.nav-sep{margin:8px 6px}
+.side-foot{padding-top:12px}
+@media (max-width:900px){ .side{overflow-x:auto;overflow-y:hidden} }
 </style>
 </head>
 <body data-view="loading">
@@ -383,161 +392,6 @@ svg{flex-shrink:0}
       <input type="checkbox" id="pinRemember" checked>
       <span>จำเครื่องนี้ไว้ ครั้งหน้าไม่ต้องใส่รหัส</span>
     </label>
-    <!-- งวดจ่าย -->
-    <div class="page pr-page" hidden id="p-pr-periods">
-      <div class="head">
-        <div><h1>งวดจ่ายค่าแรง</h1><div class="sub">รอบครึ่งเดือน — วันที่ 1–15 และ 16 ถึงสิ้นเดือน</div></div>
-        <div class="tools">
-          <button type="button" class="btn green" id="newPeriodBtn"><i data-ic="plus" data-s="19"></i><span>สร้างงวดใหม่</span></button>
-        </div>
-      </div>
-      <section class="card"><div class="tbl-wrap"><table>
-        <thead><tr><th>งวด</th><th>ช่วงวันที่</th><th class="r">จำนวนคน</th><th class="r">ยอดโอนสุทธิ</th><th>สถานะ</th><th>จัดการ</th></tr></thead>
-        <tbody id="periodBody"></tbody>
-      </table></div></section>
-    </div>
-
-    <!-- ค่าแรงรายวัน -->
-    <div class="page pr-page" hidden id="p-pr-daily" hidden>
-      <div class="head">
-        <div><h1>คีย์ค่าแรงรายวัน</h1><div class="sub" id="dailySub"></div></div>
-        <div class="tools">
-          <label class="fld"><span>งวด</span><select id="dailyPeriod" style="width:210px"></select></label>
-          <button type="button" class="btn blue" id="dailyImport"><i data-ic="refresh" data-s="19"></i><span>ดึงวันทำงานจากแอปลงเวลา</span></button>
-          <button type="button" class="btn" id="dailyFill"><i data-ic="grid" data-s="19"></i><span>เติมค่าแรงมาตรฐาน</span></button>
-          <button type="button" class="btn green" id="dailySave"><i data-ic="check" data-s="19"></i><span>บันทึก</span></button>
-        </div>
-      </div>
-      <div class="alert info"><i data-ic="warn" data-s="21"></i><span>ช่องสีขาว = ค่าแรง · ช่องสีครีม = ชั่วโมง OT · เว้นว่าง = ไม่มาทำงาน · ช่องที่แก้แล้วยังไม่บันทึกจะเป็นขอบเขียว</span></div>
-      <section class="card"><div class="tbl-wrap" id="dailyWrap"></div></section>
-    </div>
-
-    <!-- ค่าแรงเหมา -->
-    <div class="page pr-page" hidden id="p-pr-piece" hidden>
-      <div class="head">
-        <div><h1>ค่าแรงเหมา</h1><div class="sub" id="pieceSub"></div></div>
-        <div class="tools">
-          <label class="fld"><span>งวด</span><select id="piecePeriod" style="width:210px"></select></label>
-          <button type="button" class="btn blue" id="pieceImport"><i data-ic="refresh" data-s="19"></i><span>ดึงจากชีตบรรจุ</span></button>
-          <button type="button" class="btn" id="pieceRateAll"><i data-ic="calc" data-s="19"></i><span>ใส่อัตราทั้งตาราง</span></button>
-          <button type="button" class="btn" id="pieceAdd"><i data-ic="plus" data-s="19"></i><span>เพิ่มรายการเอง</span></button>
-          <button type="button" class="btn green" id="pieceSave"><i data-ic="check" data-s="19"></i><span>บันทึกอัตรา</span></button>
-        </div>
-      </div>
-      <section class="card"><div class="tbl-wrap"><table>
-        <thead><tr><th>วันที่</th><th>พนักงาน</th><th>งาน</th><th>LOT</th><th class="r">จำนวน</th><th>หน่วย</th><th class="r">อัตรา</th><th class="r">เป็นเงิน</th><th>หมายเหตุ</th><th>ที่มา</th><th></th></tr></thead>
-        <tbody id="pieceBody"></tbody>
-        <tfoot><tr><td colspan="7">รวม</td><td class="r" id="pieceTotal">0</td><td colspan="3"></td></tr></tfoot>
-      </table></div></section>
-    </div>
-
-    <!-- เพิ่ม/หัก และเงินกู้ -->
-    <div class="page pr-page" hidden id="p-pr-adjust" hidden>
-      <div class="head">
-        <div><h1>รายการเพิ่ม/หัก และเงินกู้</h1><div class="sub" id="adjSub"></div></div>
-        <div class="tools"><label class="fld"><span>งวด</span><select id="adjPeriod" style="width:210px"></select></label></div>
-      </div>
-      <section class="card">
-        <div class="pad" style="border-bottom:1px solid #EEE8DD"><h2>รายการเพิ่ม / หัก ในงวดนี้</h2></div>
-        <div class="tbl-wrap"><table>
-          <thead><tr><th>พนักงาน</th><th>ประเภท</th><th class="r">จำนวนเงิน</th><th>หมายเหตุ</th><th></th></tr></thead>
-          <tbody id="adjBody"></tbody>
-        </table></div>
-        <div class="pad row" style="border-top:1px solid #EEE8DD">
-          <label class="fld" style="width:220px"><span>พนักงาน</span><select id="adjEmp"></select></label>
-          <label class="fld" style="width:160px"><span>ประเภท</span><select id="adjType"></select></label>
-          <label class="fld" style="width:140px"><span>จำนวนเงิน</span><input type="number" id="adjAmount" min="0" step="0.01"></label>
-          <label class="fld" style="width:300px"><span>หมายเหตุ</span><input type="text" id="adjNote"></label>
-          <button type="button" class="btn navy" id="adjAdd"><i data-ic="plus" data-s="19"></i><span>เพิ่มรายการ</span></button>
-        </div>
-      </section>
-      <section class="card">
-        <div class="pad" style="border-bottom:1px solid #EEE8DD;display:flex;justify-content:space-between;align-items:center;gap:12px">
-          <h2>เงินกู้พนักงาน</h2>
-          <button type="button" class="btn green" id="loanAdd"><i data-ic="plus" data-s="19"></i><span>เพิ่มสัญญาเงินกู้</span></button>
-        </div>
-        <div class="tbl-wrap"><table>
-          <thead><tr><th>พนักงาน</th><th>วันที่กู้</th><th class="r">ยอดกู้</th><th class="r">หักงวดละ</th><th class="r">จ่ายแล้ว</th><th class="r">คงเหลือ</th><th class="r">หักงวดนี้</th><th>สถานะ</th><th></th></tr></thead>
-          <tbody id="loanBody"></tbody>
-        </table></div>
-      </section>
-    </div>
-
-    <!-- ปิดงวด -->
-    <div class="page pr-page" hidden id="p-pr-close" hidden>
-      <div class="head">
-        <div><h1>ตรวจสอบและปิดงวด</h1><div class="sub" id="closeSub"></div></div>
-        <div class="tools">
-          <label class="fld"><span>งวด</span><select id="closePeriod" style="width:210px"></select></label>
-          <button type="button" class="btn" id="slipAll"><i data-ic="print" data-s="19"></i><span>สร้างสลิปทั้งงวด</span></button>
-          <button type="button" class="btn" id="transferBtn"><i data-ic="download" data-s="19"></i><span>ใบสรุปโอนเงิน</span></button>
-          <button type="button" class="btn green" id="closeBtn"><i data-ic="lock" data-s="19"></i><span>ปิดงวด</span></button>
-          <button type="button" class="btn red" id="reopenBtn" hidden><span>เปิดงวดเพื่อแก้ไข</span></button>
-        </div>
-      </div>
-      <div id="closeAlert"></div>
-      <div class="stats" id="closeStats"></div>
-      <section class="card"><div class="tbl-wrap"><table>
-        <thead><tr><th>ชื่อ-สกุล</th><th class="r">วัน</th><th class="r">รายวัน</th><th class="r">โอที</th><th class="r">เหมา</th><th class="r">เพิ่ม</th><th class="r">ปกส.</th><th class="r">เงินกู้</th><th class="r">หักอื่น</th><th class="r">สุทธิ</th><th>ธนาคาร</th><th></th></tr></thead>
-        <tbody id="closeBody"></tbody>
-        <tfoot id="closeFoot"></tfoot>
-      </table></div></section>
-    </div>
-
-    <!-- พนักงาน -->
-    <div class="page pr-page" hidden id="p-pr-emps" hidden>
-      <div class="head">
-        <div><h1>ข้อมูลค่าแรงพนักงาน</h1><div class="sub">ค่าแรงต่อวัน รหัสบรรจุ บัญชีธนาคาร และประกันสังคม</div></div>
-      </div>
-      <div class="alert info"><i data-ic="warn" data-s="21"></i><span>รหัสบรรจุ คือเลขนำหน้าชื่อในชีตงานบรรจุ เช่น 54 พี่เล็ก ให้ใส่ 54 ถ้าไม่ใส่ ระบบจะดึงค่าแรงเหมาของคนนั้นไม่ได้</span></div>
-      <section class="card"><div class="tbl-wrap"><table>
-        <thead><tr><th>รหัส</th><th>ชื่อ-สกุล</th><th>ชื่อเล่น/แผนก</th><th class="r">ค่าแรง/วัน</th><th class="r">รหัสบรรจุ</th><th>เลขที่บัญชี</th><th>ธนาคาร</th><th class="c">ปกส.</th><th>ตำแหน่ง</th><th>วันเริ่มงาน</th><th></th></tr></thead>
-        <tbody id="empBody"></tbody>
-      </table></div></section>
-    </div>
-
-    <!-- ตั้งค่า -->
-    <div class="page pr-page" hidden id="p-pr-set" hidden>
-      <div class="head">
-        <div><h1>ตั้งค่าระบบ</h1><div class="sub">ข้อมูลบริษัท การคิด OT ประกันสังคม และอัตราค่าแรงเหมา</div></div>
-        <div class="tools"><button type="button" class="btn green" id="setSave"><i data-ic="check" data-s="19"></i><span>บันทึกการตั้งค่า</span></button></div>
-      </div>
-      <div class="set-grid">
-        <section class="card pad" style="display:flex;flex-direction:column;gap:12px">
-          <h2>ข้อมูลบริษัท (ใช้บนเอกสาร)</h2>
-          <label class="fld"><span>ชื่อบริษัท</span><input type="text" id="s_companyName"></label>
-          <label class="fld"><span>ที่อยู่</span><input type="text" id="s_companyAddress"></label>
-          <div class="grid2">
-            <label class="fld"><span>เบอร์โทร</span><input type="text" id="s_companyPhone"></label>
-            <label class="fld"><span>เลขประจำตัวผู้เสียภาษี</span><input type="text" id="s_taxId"></label>
-          </div>
-          <div class="grid2">
-            <label class="fld"><span>ผู้มีอำนาจลงนาม</span><input type="text" id="s_signerName"></label>
-            <label class="fld"><span>ตำแหน่ง</span><input type="text" id="s_signerTitle"></label>
-          </div>
-        </section>
-        <section class="card pad" style="display:flex;flex-direction:column;gap:12px">
-          <h2>การคำนวณ</h2>
-          <div class="grid3">
-            <label class="fld"><span>ชั่วโมงทำงาน/วัน</span><input type="number" id="s_hoursPerDay" min="1" max="12"></label>
-            <label class="fld"><span>ตัวคูณ OT</span><input type="number" id="s_otMultiplier" min="1" max="3" step="0.1"></label>
-            <label class="fld"><span>ปัดยอดสุทธิ</span><select id="s_roundNet"><option value="1">ปัดเป็นจำนวนเต็ม</option><option value="0">ไม่ปัด</option></select></label>
-          </div>
-          <div class="grid3">
-            <label class="fld"><span>ประกันสังคม (%)</span><input type="number" id="s_ssRate" min="0" max="10" step="0.5"></label>
-            <label class="fld"><span>สูงสุด/เดือน (บาท)</span><input type="number" id="s_ssMax" min="0"></label>
-            <label class="fld"><span>หักเมื่อไร</span><select id="s_ssMode"><option value="end">งวดสิ้นเดือนครั้งเดียว</option><option value="each">ทุกงวด งวดละครึ่ง</option></select></label>
-          </div>
-          <h2 style="margin-top:6px">ค่าแรงเหมา</h2>
-          <div class="grid3">
-            <label class="fld"><span>อัตราต่อหน่วย (บาท)</span><input type="number" id="s_pieceRate" min="0" step="0.01"></label>
-            <label class="fld"><span>หน่วย</span><input type="text" id="s_pieceUnit"></label>
-            <label class="fld"><span>ชื่องาน</span><input type="text" id="s_pieceJobName"></label>
-          </div>
-          <p class="hint" id="setHint"></p>
-        </section>
-      </div>
-    </div>
   </main>
 </section>
 
@@ -825,6 +679,161 @@ svg{flex-shrink:0}
       <div class="save-bar">
         <button type="button" class="btn-outline" id="sCancel">ยกเลิกการแก้ไข</button>
         <button type="button" class="btn-green" id="sSave">บันทึกการตั้งค่า</button>
+      </div>
+    </div>
+    <!-- งวดจ่าย -->
+    <div class="page pr-page" hidden id="p-pr-periods">
+      <div class="head">
+        <div><h1>งวดจ่ายค่าแรง</h1><div class="sub">รอบครึ่งเดือน — วันที่ 1–15 และ 16 ถึงสิ้นเดือน</div></div>
+        <div class="tools">
+          <button type="button" class="btn green" id="newPeriodBtn"><i data-ic="plus" data-s="19"></i><span>สร้างงวดใหม่</span></button>
+        </div>
+      </div>
+      <section class="card"><div class="tbl-wrap"><table>
+        <thead><tr><th>งวด</th><th>ช่วงวันที่</th><th class="r">จำนวนคน</th><th class="r">ยอดโอนสุทธิ</th><th>สถานะ</th><th>จัดการ</th></tr></thead>
+        <tbody id="periodBody"></tbody>
+      </table></div></section>
+    </div>
+
+    <!-- ค่าแรงรายวัน -->
+    <div class="page pr-page" hidden id="p-pr-daily" hidden>
+      <div class="head">
+        <div><h1>คีย์ค่าแรงรายวัน</h1><div class="sub" id="dailySub"></div></div>
+        <div class="tools">
+          <label class="fld"><span>งวด</span><select id="dailyPeriod" style="width:210px"></select></label>
+          <button type="button" class="btn blue" id="dailyImport"><i data-ic="refresh" data-s="19"></i><span>ดึงวันทำงานจากแอปลงเวลา</span></button>
+          <button type="button" class="btn" id="dailyFill"><i data-ic="grid" data-s="19"></i><span>เติมค่าแรงมาตรฐาน</span></button>
+          <button type="button" class="btn green" id="dailySave"><i data-ic="check" data-s="19"></i><span>บันทึก</span></button>
+        </div>
+      </div>
+      <div class="alert info"><i data-ic="warn" data-s="21"></i><span>ช่องสีขาว = ค่าแรง · ช่องสีครีม = ชั่วโมง OT · เว้นว่าง = ไม่มาทำงาน · ช่องที่แก้แล้วยังไม่บันทึกจะเป็นขอบเขียว</span></div>
+      <section class="card"><div class="tbl-wrap" id="dailyWrap"></div></section>
+    </div>
+
+    <!-- ค่าแรงเหมา -->
+    <div class="page pr-page" hidden id="p-pr-piece" hidden>
+      <div class="head">
+        <div><h1>ค่าแรงเหมา</h1><div class="sub" id="pieceSub"></div></div>
+        <div class="tools">
+          <label class="fld"><span>งวด</span><select id="piecePeriod" style="width:210px"></select></label>
+          <button type="button" class="btn blue" id="pieceImport"><i data-ic="refresh" data-s="19"></i><span>ดึงจากชีตบรรจุ</span></button>
+          <button type="button" class="btn" id="pieceRateAll"><i data-ic="calc" data-s="19"></i><span>ใส่อัตราทั้งตาราง</span></button>
+          <button type="button" class="btn" id="pieceAdd"><i data-ic="plus" data-s="19"></i><span>เพิ่มรายการเอง</span></button>
+          <button type="button" class="btn green" id="pieceSave"><i data-ic="check" data-s="19"></i><span>บันทึกอัตรา</span></button>
+        </div>
+      </div>
+      <section class="card"><div class="tbl-wrap"><table>
+        <thead><tr><th>วันที่</th><th>พนักงาน</th><th>งาน</th><th>LOT</th><th class="r">จำนวน</th><th>หน่วย</th><th class="r">อัตรา</th><th class="r">เป็นเงิน</th><th>หมายเหตุ</th><th>ที่มา</th><th></th></tr></thead>
+        <tbody id="pieceBody"></tbody>
+        <tfoot><tr><td colspan="7">รวม</td><td class="r" id="pieceTotal">0</td><td colspan="3"></td></tr></tfoot>
+      </table></div></section>
+    </div>
+
+    <!-- เพิ่ม/หัก และเงินกู้ -->
+    <div class="page pr-page" hidden id="p-pr-adjust" hidden>
+      <div class="head">
+        <div><h1>รายการเพิ่ม/หัก และเงินกู้</h1><div class="sub" id="adjSub"></div></div>
+        <div class="tools"><label class="fld"><span>งวด</span><select id="adjPeriod" style="width:210px"></select></label></div>
+      </div>
+      <section class="card">
+        <div class="pad" style="border-bottom:1px solid #EEE8DD"><h2>รายการเพิ่ม / หัก ในงวดนี้</h2></div>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>พนักงาน</th><th>ประเภท</th><th class="r">จำนวนเงิน</th><th>หมายเหตุ</th><th></th></tr></thead>
+          <tbody id="adjBody"></tbody>
+        </table></div>
+        <div class="pad row" style="border-top:1px solid #EEE8DD">
+          <label class="fld" style="width:220px"><span>พนักงาน</span><select id="adjEmp"></select></label>
+          <label class="fld" style="width:160px"><span>ประเภท</span><select id="adjType"></select></label>
+          <label class="fld" style="width:140px"><span>จำนวนเงิน</span><input type="number" id="adjAmount" min="0" step="0.01"></label>
+          <label class="fld" style="width:300px"><span>หมายเหตุ</span><input type="text" id="adjNote"></label>
+          <button type="button" class="btn navy" id="adjAdd"><i data-ic="plus" data-s="19"></i><span>เพิ่มรายการ</span></button>
+        </div>
+      </section>
+      <section class="card">
+        <div class="pad" style="border-bottom:1px solid #EEE8DD;display:flex;justify-content:space-between;align-items:center;gap:12px">
+          <h2>เงินกู้พนักงาน</h2>
+          <button type="button" class="btn green" id="loanAdd"><i data-ic="plus" data-s="19"></i><span>เพิ่มสัญญาเงินกู้</span></button>
+        </div>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>พนักงาน</th><th>วันที่กู้</th><th class="r">ยอดกู้</th><th class="r">หักงวดละ</th><th class="r">จ่ายแล้ว</th><th class="r">คงเหลือ</th><th class="r">หักงวดนี้</th><th>สถานะ</th><th></th></tr></thead>
+          <tbody id="loanBody"></tbody>
+        </table></div>
+      </section>
+    </div>
+
+    <!-- ปิดงวด -->
+    <div class="page pr-page" hidden id="p-pr-close" hidden>
+      <div class="head">
+        <div><h1>ตรวจสอบและปิดงวด</h1><div class="sub" id="closeSub"></div></div>
+        <div class="tools">
+          <label class="fld"><span>งวด</span><select id="closePeriod" style="width:210px"></select></label>
+          <button type="button" class="btn" id="slipAll"><i data-ic="print" data-s="19"></i><span>สร้างสลิปทั้งงวด</span></button>
+          <button type="button" class="btn" id="transferBtn"><i data-ic="download" data-s="19"></i><span>ใบสรุปโอนเงิน</span></button>
+          <button type="button" class="btn green" id="closeBtn"><i data-ic="lock" data-s="19"></i><span>ปิดงวด</span></button>
+          <button type="button" class="btn red" id="reopenBtn" hidden><span>เปิดงวดเพื่อแก้ไข</span></button>
+        </div>
+      </div>
+      <div id="closeAlert"></div>
+      <div class="stats" id="closeStats"></div>
+      <section class="card"><div class="tbl-wrap"><table>
+        <thead><tr><th>ชื่อ-สกุล</th><th class="r">วัน</th><th class="r">รายวัน</th><th class="r">โอที</th><th class="r">เหมา</th><th class="r">เพิ่ม</th><th class="r">ปกส.</th><th class="r">เงินกู้</th><th class="r">หักอื่น</th><th class="r">สุทธิ</th><th>ธนาคาร</th><th></th></tr></thead>
+        <tbody id="closeBody"></tbody>
+        <tfoot id="closeFoot"></tfoot>
+      </table></div></section>
+    </div>
+
+    <!-- พนักงาน -->
+    <div class="page pr-page" hidden id="p-pr-emps" hidden>
+      <div class="head">
+        <div><h1>ข้อมูลค่าแรงพนักงาน</h1><div class="sub">ค่าแรงต่อวัน รหัสบรรจุ บัญชีธนาคาร และประกันสังคม</div></div>
+      </div>
+      <div class="alert info"><i data-ic="warn" data-s="21"></i><span>รหัสบรรจุ คือเลขนำหน้าชื่อในชีตงานบรรจุ เช่น 54 พี่เล็ก ให้ใส่ 54 ถ้าไม่ใส่ ระบบจะดึงค่าแรงเหมาของคนนั้นไม่ได้</span></div>
+      <section class="card"><div class="tbl-wrap"><table>
+        <thead><tr><th>รหัส</th><th>ชื่อ-สกุล</th><th>ชื่อเล่น/แผนก</th><th class="r">ค่าแรง/วัน</th><th class="r">รหัสบรรจุ</th><th>เลขที่บัญชี</th><th>ธนาคาร</th><th class="c">ปกส.</th><th>ตำแหน่ง</th><th>วันเริ่มงาน</th><th></th></tr></thead>
+        <tbody id="empBody"></tbody>
+      </table></div></section>
+    </div>
+
+    <!-- ตั้งค่า -->
+    <div class="page pr-page" hidden id="p-pr-set" hidden>
+      <div class="head">
+        <div><h1>ตั้งค่าระบบ</h1><div class="sub">ข้อมูลบริษัท การคิด OT ประกันสังคม และอัตราค่าแรงเหมา</div></div>
+        <div class="tools"><button type="button" class="btn green" id="setSave"><i data-ic="check" data-s="19"></i><span>บันทึกการตั้งค่า</span></button></div>
+      </div>
+      <div class="set-grid">
+        <section class="card pad" style="display:flex;flex-direction:column;gap:12px">
+          <h2>ข้อมูลบริษัท (ใช้บนเอกสาร)</h2>
+          <label class="fld"><span>ชื่อบริษัท</span><input type="text" id="s_companyName"></label>
+          <label class="fld"><span>ที่อยู่</span><input type="text" id="s_companyAddress"></label>
+          <div class="grid2">
+            <label class="fld"><span>เบอร์โทร</span><input type="text" id="s_companyPhone"></label>
+            <label class="fld"><span>เลขประจำตัวผู้เสียภาษี</span><input type="text" id="s_taxId"></label>
+          </div>
+          <div class="grid2">
+            <label class="fld"><span>ผู้มีอำนาจลงนาม</span><input type="text" id="s_signerName"></label>
+            <label class="fld"><span>ตำแหน่ง</span><input type="text" id="s_signerTitle"></label>
+          </div>
+        </section>
+        <section class="card pad" style="display:flex;flex-direction:column;gap:12px">
+          <h2>การคำนวณ</h2>
+          <div class="grid3">
+            <label class="fld"><span>ชั่วโมงทำงาน/วัน</span><input type="number" id="s_hoursPerDay" min="1" max="12"></label>
+            <label class="fld"><span>ตัวคูณ OT</span><input type="number" id="s_otMultiplier" min="1" max="3" step="0.1"></label>
+            <label class="fld"><span>ปัดยอดสุทธิ</span><select id="s_roundNet"><option value="1">ปัดเป็นจำนวนเต็ม</option><option value="0">ไม่ปัด</option></select></label>
+          </div>
+          <div class="grid3">
+            <label class="fld"><span>ประกันสังคม (%)</span><input type="number" id="s_ssRate" min="0" max="10" step="0.5"></label>
+            <label class="fld"><span>สูงสุด/เดือน (บาท)</span><input type="number" id="s_ssMax" min="0"></label>
+            <label class="fld"><span>หักเมื่อไร</span><select id="s_ssMode"><option value="end">งวดสิ้นเดือนครั้งเดียว</option><option value="each">ทุกงวด งวดละครึ่ง</option></select></label>
+          </div>
+          <h2 style="margin-top:6px">ค่าแรงเหมา</h2>
+          <div class="grid3">
+            <label class="fld"><span>อัตราต่อหน่วย (บาท)</span><input type="number" id="s_pieceRate" min="0" step="0.01"></label>
+            <label class="fld"><span>หน่วย</span><input type="text" id="s_pieceUnit"></label>
+            <label class="fld"><span>ชื่องาน</span><input type="text" id="s_pieceJobName"></label>
+          </div>
+          <p class="hint" id="setHint"></p>
+        </section>
       </div>
     </div>
   </main>
