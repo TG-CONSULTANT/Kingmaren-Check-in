@@ -348,6 +348,8 @@ svg{flex-shrink:0}
 .nav-sep{margin:8px 6px}
 .side-foot{padding-top:12px}
 @media (max-width:900px){ .side{overflow-x:auto;overflow-y:hidden} }
+
+.pr-page .cell.noted{border-color:#B45309;background:#FDF8EF}
 </style>
 </head>
 <body data-view="loading">
@@ -430,17 +432,7 @@ svg{flex-shrink:0}
     <button type="button" id="retryGps" class="btn-blue-lg" hidden><i data-ic="refresh" data-s="30"></i><span>ลองหาตำแหน่งใหม่</span></button>
     <div class="today-card">
       <div class="today-t">วันนี้</div>
-      <div class="grid2">
-        <div>
-          <div class="lbl">เข้างาน</div>
-          <div class="tval" id="tIn">--:--</div>
-          <div class="tstat" id="tInStat"></div>
-        </div>
-        <div>
-          <div class="lbl">ออกงาน</div>
-          <div class="tval" id="tOut">--:--</div>
-        </div>
-      </div>
+      <div class="grid2" id="todayGrid"></div>
     </div>
   </main>
 </section>
@@ -557,7 +549,7 @@ svg{flex-shrink:0}
         </div>
         <div class="tbl-wrap">
           <table class="tbl">
-            <thead><tr><th>รูป</th><th>ชื่อ-สกุล</th><th>แผนก</th><th>เข้างาน</th><th>ออกงาน</th><th>ระยะจากโรงงาน</th><th>สถานะ</th></tr></thead>
+            <thead><tr><th>รูป</th><th>ชื่อ-สกุล</th><th>แผนก</th><th>เข้าเช้า</th><th>ออกเช้า</th><th>เข้าบ่าย</th><th>ออกบ่าย</th><th>ระยะ</th><th>สถานะ</th></tr></thead>
             <tbody id="dashBody"></tbody>
           </table>
         </div>
@@ -651,9 +643,12 @@ svg{flex-shrink:0}
           <section class="card set-card">
             <h2 class="adm-h2">เวลาทำงาน</h2>
             <div class="grid-3">
-              <label class="fld"><span>เวลาเข้างาน</span><input type="time" id="sStart"></label>
-              <label class="fld"><span>ผ่อนผัน (นาที)</span><input type="number" id="sGrace" min="0" max="120"></label>
-              <label class="fld"><span>เวลาออกงาน</span><input type="time" id="sEnd"></label>
+              <label class="fld"><span>เข้างานเช้า</span><input type="time" id="sStart"></label>
+              <label class="fld"><span>ผ่อนผันเช้า (นาที)</span><input type="number" id="sGrace" min="0" max="120"></label>
+              <label class="fld"><span>พักเที่ยง (ออกเช้า)</span><input type="time" id="sLunch"></label>
+              <label class="fld"><span>เข้างานบ่าย</span><input type="time" id="sAfternoon"></label>
+              <label class="fld"><span>ผ่อนผันบ่าย (นาที)</span><input type="number" id="sGraceP" min="0" max="120"></label>
+              <label class="fld"><span>เลิกงาน (ออกบ่าย)</span><input type="time" id="sEnd"></label>
             </div>
             <div class="fld"><span>วันทำงาน (ใช้กับสรุปตอนเช้า)</span><div class="days" id="sDays"></div></div>
             <label class="chk"><input type="checkbox" id="sDupBlock"><span>ห้ามลงเวลาซ้ำภายใน</span><input type="number" class="inl" id="sDupMin" min="1" max="240" aria-label="จำนวนนาที"><span>นาที</span></label>
@@ -672,6 +667,7 @@ svg{flex-shrink:0}
             </div>
             <label class="chk"><input type="checkbox" id="sNIn"><span>ส่งรูป + ชื่อ + เวลา ตอนเข้างาน</span></label>
             <label class="chk"><input type="checkbox" id="sNOut"><span>ส่งตอนออกงานด้วย</span></label>
+            <label class="chk"><input type="checkbox" id="sNMid"><span>ส่งช่วงพักเที่ยงด้วย (ออกเช้า / เข้าบ่าย)</span></label>
             <label class="chk"><input type="checkbox" id="sNSum"><span>ส่งสรุปรายชื่อคนยังไม่มา ประมาณ 09:00 น.</span></label>
           </section>
         </div>
@@ -884,7 +880,7 @@ const $ = id => document.getElementById(id);
 const S = {
   token: null, user: null, home: null, offset: 0,
   pos: null, posErr: null, watchId: null, clockTimer: null,
-  stream: null, photo: null, nextType: 'IN', doneTimer: null, busy: false,
+  stream: null, photo: null, nextType: 'IN1', doneTimer: null, busy: false,
   dash: null, dashFilter: 'all', emps: null, photos: {}, photoPending: {}, toastTimer: null
 };
 const DAY_NAMES = ['จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.', 'อา.'];
@@ -1107,9 +1103,10 @@ function applyHome(h) {
   S.nextType = h.next;
   $('homeName').textContent = h.user.name;
   $('homeDate').textContent = h.dateText;
-  $('tIn').textContent = h.today.inTime || '--:--';
-  $('tInStat').textContent = h.today.inStatus || '';
-  $('tOut').textContent = h.today.outTime || '--:--';
+  $('todayGrid').innerHTML = (h.today || []).map(p =>
+    '<div><div class="lbl">' + esc(p.label) + '</div>' +
+    '<div class="tval">' + (p.time || '--:--') + '</div>' +
+    '<div class="tstat">' + esc(p.status || '') + '</div></div>').join('');
   startClock();
   renderHomeState();
 }
@@ -1195,9 +1192,12 @@ function renderHomeState() {
     return;
   }
   if (g.k === 'in') {
-    const isIn = S.nextType === 'IN';
+    const isIn = S.home.nextKind === 'in';
     btn.className = 'big-btn ' + (isIn ? 'go-in' : 'go-out'); btn.disabled = false;
-    btn.innerHTML = ic('camera', 68, 1.8) + '<span class="bb-t">' + (isIn ? 'เข้างาน' : 'ออกงาน') + '</span><span class="bb-s">กดแล้วถ่ายรูปหน้า</span>';
+    btn.innerHTML = ic('camera', 62, 1.8) +
+      '<span class="bb-t">' + esc(S.home.nextBtn || S.home.nextLabel) + '</span>' +
+      '<span class="bb-s">' + esc(S.home.nextSub || 'กดแล้วถ่ายรูปหน้า') +
+      (S.home.nextTime ? ' · กำหนด ' + S.home.nextTime + ' น.' : '') + '</span>';
     return;
   }
   if (g.k === 'checking' || g.k === 'weak') {
@@ -1220,7 +1220,7 @@ async function openCamera() {
   if (S.busy) return;
   if (S.home && bkkKey(nowMs()) !== S.home.dkey) { await openHome(); return; }
   show('camera');
-  $('camTitle').textContent = S.nextType === 'OUT' ? 'ถ่ายรูปก่อนออกงาน' : 'ถ่ายรูปหน้าตัวเอง';
+  $('camTitle').textContent = 'ถ่ายรูป' + (S.home && S.home.nextLabel ? ' · ' + S.home.nextLabel : 'หน้าตัวเอง');
   $('camErr').hidden = true;
   $('shutter').disabled = true;
   renderHomeState();
@@ -1273,7 +1273,7 @@ function capture() {
   S.photo = c.toDataURL('image/jpeg', 0.72);
   stopCamera();
   $('confirmImg').src = S.photo;
-  $('useLbl').textContent = S.nextType === 'OUT' ? 'ใช้รูปนี้ บันทึกออกงาน' : 'ใช้รูปนี้ บันทึกเข้างาน';
+  $('useLbl').textContent = 'ใช้รูปนี้ บันทึก' + (S.home && S.home.nextLabel ? S.home.nextLabel : '');
   $('confirmMsg').textContent = '';
   $('useBtn').disabled = false;
   show('confirm');
@@ -1321,8 +1321,7 @@ async function submitAttendance() {
 function showDone(r) {
   show('done');
   S.photo = null;
-  const isOut = r.type === 'OUT';
-  $('doneTitle').textContent = isOut ? 'บันทึกออกงานแล้ว' : 'บันทึกเข้างานแล้ว';
+  $('doneTitle').textContent = 'บันทึก' + (r.label || '') + 'แล้ว';
   $('doneTime').textContent = r.time + ' น.';
   const st = $('doneStatus');
   st.textContent = r.statusText;
@@ -1364,7 +1363,7 @@ function goPage(p) {
 /* ---------- ภาพรวม ---------- */
 async function loadDash() {
   const date = $('dashDate').value || bkkKey(nowMs());
-  $('dashBody').innerHTML = rowMsg(7, 'กำลังโหลด...');
+  $('dashBody').innerHTML = rowMsg(9, 'กำลังโหลด...');
   try {
     const d = await call('getDashboard', { date: date });
     S.dash = d;
@@ -1378,7 +1377,7 @@ async function loadDash() {
     $('stAbsL').textContent = d.isToday ? 'ยังไม่มา' : 'ไม่ได้ลงเวลา';
     renderDash();
   } catch (e) {
-    $('dashBody').innerHTML = rowMsg(7, esc(e.message));
+    $('dashBody').innerHTML = rowMsg(9, esc(e.message));
   }
 }
 function renderDash() {
@@ -1399,16 +1398,18 @@ function renderDash() {
   );
   $('dashBody').innerHTML = rows.length ? rows.map(r => {
     const thumb = r.inPhoto
-      ? '<button type="button" class="thumb" data-photo="' + esc(r.inPhoto) + '" data-cap="' + esc(r.name + ' · เข้างาน ' + r.inTime + ' น.') + '" aria-label="ดูรูปขยายของ ' + esc(r.name) + '">' + ic('person', 28, 1.6) + '<img alt="" data-fid="' + esc(r.inPhoto) + '"></button>'
+      ? '<button type="button" class="thumb" data-photo="' + esc(r.inPhoto) + '" data-cap="' + esc(r.name + ' · เข้าเช้า ' + r.inTime + ' น.') + '" aria-label="ดูรูปขยายของ ' + esc(r.name) + '">' + ic('person', 28, 1.6) + '<img alt="" data-fid="' + esc(r.inPhoto) + '"></button>'
       : '<span class="thumb">' + ic('person', 28, 1.6) + '</span>';
-    const out = r.outTime
-      ? '<button type="button" class="link-btn" data-photo="' + esc(r.outPhoto) + '" data-cap="' + esc(r.name + ' · ออกงาน ' + r.outTime + ' น.') + '">' + esc(r.outTime) + '</button>' +
-        (r.outStatus ? '<span class="small-note">' + esc(r.outStatus) + '</span>' : '')
-      : '–';
+    const cells = (r.punches || []).map(p => p.time
+      ? '<td><button type="button" class="link-btn" data-photo="' + esc(p.photo) + '" data-cap="' + esc(r.name + ' · ' + p.label + ' ' + p.time + ' น.') + '">' + esc(p.time) + '</button>' +
+        (p.status ? '<span class="small-note">' + esc(p.status) + '</span>' : '') + '</td>'
+      : '<td>–</td>').join('');
+    const flags = (r.half ? '<span class="small-note">ครึ่งวัน</span>' : '') +
+      (r.incomplete && !r.half ? '<span class="small-note">ลงไม่ครบ</span>' : '');
     return '<tr><td>' + thumb + '</td><td class="b">' + esc(r.name) + '</td><td>' + esc(r.dept) + '</td>' +
-      '<td class="b">' + (r.inTime ? esc(r.inTime) : '–') + '</td><td>' + out + '</td>' +
-      '<td>' + fmtDistShort(r.dist) + '</td><td><span class="pill ' + r.state + '">' + esc(r.label) + '</span></td></tr>';
-  }).join('') : rowMsg(7, d.rows.length ? 'ไม่พบรายชื่อที่ค้นหา' : 'ยังไม่มีพนักงานในระบบ เพิ่มได้ที่เมนู "พนักงาน"');
+      cells + '<td>' + fmtDistShort(r.dist) + '</td>' +
+      '<td><span class="pill ' + r.state + '">' + esc(r.label) + '</span>' + flags + '</td></tr>';
+  }).join('') : rowMsg(9, d.rows.length ? 'ไม่พบรายชื่อที่ค้นหา' : 'ยังไม่มีพนักงานในระบบ เพิ่มได้ที่เมนู "พนักงาน"');
   loadThumbs();
 }
 async function loadThumbs() {
@@ -1497,7 +1498,7 @@ async function loadHist() {
 
 /* ---------- พนักงาน ---------- */
 async function loadEmps() {
-  $('eBody').innerHTML = rowMsg(7, 'กำลังโหลด...');
+  $('eBody').innerHTML = rowMsg(9, 'กำลังโหลด...');
   try {
     S.emps = await call('listEmployees');
     fillFormSelects();
@@ -1619,6 +1620,9 @@ async function loadSettings() {
     $('sDepts').value = s.departments.join(', ');
     $('sStart').value = s.workStart;
     $('sGrace').value = s.graceMin;
+    $('sLunch').value = s.lunchStart;
+    $('sAfternoon').value = s.workAfternoon;
+    $('sGraceP').value = s.graceAfternoon;
     $('sEnd').value = s.workEnd;
     $('sDays').innerHTML = DAY_NAMES.map((n, i) =>
       '<label class="day"><input type="checkbox" value="' + (i + 1) + '"' + (s.workDays.indexOf(i + 1) >= 0 ? ' checked' : '') + '>' + n + '</label>').join('');
@@ -1628,6 +1632,7 @@ async function loadSettings() {
     $('sToken').placeholder = s.hasToken ? 'ตั้งค่าแล้ว (เว้นว่างถ้าไม่เปลี่ยน)' : 'วาง Token จาก BotFather';
     $('sChat').value = s.tgChatId;
     $('sNIn').checked = s.notifyIn;
+    $('sNMid').checked = s.notifyMidday;
     $('sNOut').checked = s.notifyOut;
     $('sNSum').checked = s.notifySummary;
     renderMap();
@@ -1671,6 +1676,9 @@ async function saveSettings() {
     departments: $('sDepts').value,
     workStart: $('sStart').value,
     graceMin: $('sGrace').value,
+    lunchStart: $('sLunch').value,
+    workAfternoon: $('sAfternoon').value,
+    graceAfternoon: $('sGraceP').value,
     workEnd: $('sEnd').value,
     workDays: Array.from($('sDays').querySelectorAll('input:checked')).map(i => Number(i.value)),
     dupBlock: $('sDupBlock').checked,
@@ -1678,6 +1686,7 @@ async function saveSettings() {
     tgToken: $('sToken').value.trim(),
     tgChatId: $('sChat').value.trim(),
     notifyIn: $('sNIn').checked,
+    notifyMidday: $('sNMid').checked,
     notifyOut: $('sNOut').checked,
     notifySummary: $('sNSum').checked
   };
@@ -1954,7 +1963,7 @@ function renderDaily(){
       if(c.wage){days++;sum+=c.wage;}
       if(c.ot) ot+=c.ot;
       return '<td class="c" style="padding:4px 3px">'+
-        '<input class="cell" type="number" min="0" step="1" value="'+(c.wage||'')+'" data-emp="'+esc(r.id)+'" data-date="'+date+'" data-k="wage"'+(locked?' disabled':'')+'>'+
+        '<input class="cell'+(c.note?' noted':'')+'" type="number" min="0" step="1" value="'+(c.wage||'')+'" title="'+esc(c.note||'')+'" data-emp="'+esc(r.id)+'" data-date="'+date+'" data-k="wage"'+(locked?' disabled':'')+'>'+
         '<input class="cell ot" type="number" min="0" step="0.5" value="'+(c.ot||'')+'" placeholder="OT" data-emp="'+esc(r.id)+'" data-date="'+date+'" data-k="ot"'+(locked?' disabled':'')+'>'+
         '</td>';
     }).join('');
@@ -2242,7 +2251,7 @@ function init(){
   $('dailyFill').addEventListener('click',fillStandard);
   $('dailyImport').addEventListener('click',async()=>{
     try{ const r=await call('importAttendance',{id:$('dailyPeriod').value},'กำลังดึงข้อมูล...');
-      toast(r.filled?('เติมให้ '+r.filled+' ช่อง'):'ไม่มีช่องว่างที่ต้องเติม','ok'); await loadDaily(); }
+      toast(r.filled?('เติมให้ '+r.filled+' วัน'+(r.half?' · ครึ่งวัน '+r.half+' วัน':'')+(r.late?' · หักสาย '+r.late+' วัน':'')):'ไม่มีช่องว่างที่ต้องเติม','ok'); await loadDaily(); }
     catch(e){ toast(e.message,'err'); }
   });
 
