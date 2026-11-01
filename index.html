@@ -697,12 +697,12 @@ svg{flex-shrink:0}
         <div><h1>คีย์ค่าแรงรายวัน</h1><div class="sub" id="dailySub"></div></div>
         <div class="tools">
           <label class="fld"><span>งวด</span><select id="dailyPeriod" style="width:210px"></select></label>
-          <button type="button" class="btn blue" id="dailyImport"><i data-ic="refresh" data-s="19"></i><span>ดึงวันทำงานจากแอปลงเวลา</span></button>
-          <button type="button" class="btn" id="dailyFill"><i data-ic="grid" data-s="19"></i><span>เติมค่าแรงมาตรฐาน</span></button>
+          <button type="button" class="btn blue" id="dailyImport"><i data-ic="refresh" data-s="19"></i><span>เติมค่าแรงตามวันที่ลงเวลา</span></button>
+          <button type="button" class="btn red" id="dailyClear"><i data-ic="warn" data-s="19"></i><span>ล้างค่าแรงทั้งงวด</span></button>
           <button type="button" class="btn green" id="dailySave"><i data-ic="check" data-s="19"></i><span>บันทึก</span></button>
         </div>
       </div>
-      <div class="alert info"><i data-ic="warn" data-s="21"></i><span>ช่องสีขาว = ค่าแรง · ช่องสีครีม = ชั่วโมง OT · เว้นว่าง = ไม่มาทำงาน · ช่องที่แก้แล้วยังไม่บันทึกจะเป็นขอบเขียว</span></div>
+      <div class="alert info"><i data-ic="warn" data-s="21"></i><span>ช่องสีขาว = ค่าแรง · ช่องสีครีม = ชั่วโมง OT · เว้นว่าง = ไม่มาทำงาน · ขอบเขียว = แก้แล้วยังไม่บันทึก · ขอบส้ม = ระบบปรับให้เพราะมาสายหรือครึ่งวัน</span></div>
       <section class="card"><div class="tbl-wrap" id="dailyWrap"></div></section>
     </div>
 
@@ -936,7 +936,7 @@ function rowMsg(cols, msg) { return '<tr><td colspan="' + cols + '" class="empty
 
 /* ============================== เรียกเซิร์ฟเวอร์ ============================== */
 // ใส่ URL ของ Apps Script Web app (ลงท้ายด้วย /exec)
-const API_URL = 'https://script.google.com/macros/s/AKfycbzO_MhLUXUc82adMq05tfb33xEX0QnQ0CVCdyl2_uatc8ihQNS8iYiwA7YEpbQP9vpc/exec';
+const API_URL = 'https://script.google.com/macros/s/ใส่_DEPLOYMENT_ID_ตรงนี้/exec';
 const API_TIMEOUT_MS = 60000;
 
 async function rpc(action, payload) {
@@ -1964,7 +1964,7 @@ function renderDaily(){
   const locked=d.period.status!=='ร่าง';
   const head='<tr><th style="min-width:190px">พนักงาน</th><th class="r">ค่าแรง/วัน</th>'+
     d.dates.map(x=>'<th class="c">'+Number(x.slice(8))+'</th>').join('')+
-    '<th class="r">วัน</th><th class="r">OT</th><th class="r">ค่าแรงรวม</th></tr>';
+    '<th class="r">วัน</th><th class="r">OT</th><th class="r">ค่าแรงรวม</th><th></th></tr>';
   const body=d.rows.map(r=>{
     let days=0,sum=0,ot=0;
     const cells=d.dates.map(date=>{
@@ -1980,10 +1980,11 @@ function renderDaily(){
       '<td class="r">'+(r.rate?money(r.rate):'<span class="pill red">ยังไม่ตั้ง</span>')+'</td>'+cells+
       '<td class="r b" data-sum="days-'+esc(r.id)+'">'+days+'</td>'+
       '<td class="r" data-sum="ot-'+esc(r.id)+'">'+(ot||'')+'</td>'+
-      '<td class="r b" data-sum="wage-'+esc(r.id)+'">'+money(sum)+'</td></tr>';
+      '<td class="r b" data-sum="wage-'+esc(r.id)+'">'+money(sum)+'</td>'+
+      '<td><button type="button" class="btn sm" data-clear-emp="'+esc(r.id)+'"'+(locked?' disabled':'')+'>ล้างแถว</button></td></tr>';
   }).join('');
   $('dailyWrap').innerHTML='<table><thead>'+head+'</thead><tbody>'+(d.rows.length?body:rowMsg(d.dates.length+5,'ยังไม่มีพนักงาน'))+'</tbody></table>';
-  $('dailySave').disabled=locked; $('dailyFill').disabled=locked; $('dailyImport').disabled=locked;
+  $('dailySave').disabled=locked; $('dailyClear').disabled=locked; $('dailyImport').disabled=locked;
 }
 function onDailyInput(e){
   const el=e.target; if(!el.dataset.emp) return;
@@ -2004,18 +2005,6 @@ async function saveDaily(){
     await loadDaily();
   }catch(e){ toast(e.message,'err'); }
 }
-function fillStandard(){
-  const d=S.daily; if(!d) return;
-  d.rows.forEach(r=>{
-    if(!r.rate) return;
-    d.dates.forEach(date=>{
-      const el=document.querySelector('input[data-emp="'+CSS.escape(r.id)+'"][data-date="'+date+'"][data-k="wage"]');
-      if(el&&!el.value){ el.value=r.rate; el.dispatchEvent(new Event('input',{bubbles:true})); }
-    });
-  });
-  toast('เติมค่าแรงมาตรฐานแล้ว อย่าลืมกดบันทึก');
-}
-
 /* ---------- ค่าแรงเหมา ---------- */
 async function loadPiece(){
   const id=$('piecePeriod').value; if(!id) return;
@@ -2264,8 +2253,26 @@ function init(){
   $('dailyPeriod').addEventListener('change',loadDaily);
   $('dailyWrap').addEventListener('input',onDailyInput);
   $('dailySave').addEventListener('click',saveDaily);
-  $('dailyFill').addEventListener('click',fillStandard);
+  $('dailyClear').addEventListener('click',async()=>{
+    const d=S.daily; if(!d) return;
+    if(!await confirmBox('ล้างค่าแรงทั้งงวด?','ลบค่าแรงรายวันของทุกคนในงวด '+d.period.text+' แล้วคีย์หรือเติมใหม่ได้','ล้างทั้งงวด','btn red')) return;
+    try{ const r=await call('clearDaily',{id:$('dailyPeriod').value},'กำลังล้าง...');
+      toast('ล้างแล้ว '+r.cleared+' รายการ','ok'); await loadDaily(); }
+    catch(e){ toast(e.message,'err'); }
+  });
+  $('dailyWrap').addEventListener('click',async e=>{
+    const b=e.target.closest('[data-clear-emp]'); if(!b) return;
+    const row=(S.daily.rows||[]).find(x=>x.id===b.dataset.clearEmp);
+    if(!await confirmBox('ล้างค่าแรงของคนนี้?',(row?row.name:'')+' ในงวดนี้','ล้างแถวนี้','btn red')) return;
+    try{ const r=await call('clearDaily',{id:$('dailyPeriod').value,empId:b.dataset.clearEmp},'กำลังล้าง...');
+      toast('ล้างแล้ว '+r.cleared+' รายการ','ok'); await loadDaily(); }
+    catch(e){ toast(e.message,'err'); }
+  });
   $('dailyImport').addEventListener('click',async()=>{
+    const d=S.daily;
+    if(!await confirmBox('เติมค่าแรงตามวันที่ลงเวลา?',
+        'ระบบจะเติมเฉพาะวันที่มีการลงเวลาจริง คิดครึ่งวันและหักสายให้อัตโนมัติ ช่องที่มีตัวเลขอยู่แล้วจะไม่ถูกทับ',
+        'เติมเลย','btn navy')) return;
     try{ const r=await call('importAttendance',{id:$('dailyPeriod').value},'กำลังดึงข้อมูล...');
       toast(r.filled?('เติมให้ '+r.filled+' วัน'+(r.half?' · ครึ่งวัน '+r.half+' วัน':'')+(r.late?' · หักสาย '+r.late+' วัน':'')):'ไม่มีช่องว่างที่ต้องเติม','ok'); await loadDaily(); }
     catch(e){ toast(e.message,'err'); }
