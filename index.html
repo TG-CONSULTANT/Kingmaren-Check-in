@@ -823,6 +823,13 @@ svg{flex-shrink:0}
             <label class="fld"><span>สูงสุด/เดือน (บาท)</span><input type="number" id="s_ssMax" min="0"></label>
             <label class="fld"><span>หักเมื่อไร</span><select id="s_ssMode"><option value="end">งวดสิ้นเดือนครั้งเดียว</option><option value="each">ทุกงวด งวดละครึ่ง</option></select></label>
           </div>
+          <h2 style="margin-top:6px">หักเงินกรณีออกก่อนเวลา</h2>
+          <div class="grid3">
+            <label class="fld"><span>เปิดใช้งาน</span><select id="s_earlyEnable"><option value="true">หักเงิน</option><option value="false">ไม่หัก</option></select></label>
+            <label class="fld"><span>ผ่อนผัน (นาที)</span><input type="number" id="s_earlyGrace" min="0" max="120"></label>
+            <label class="fld"><span>นับออกพักเที่ยง</span><select id="s_earlyCountLunch"><option value="false">ไม่นับ</option><option value="true">นับด้วย</option></select></label>
+          </div>
+          <p class="hint">นาทีที่สายกับนาทีที่ออกก่อนเวลาจะรวมกันก่อน แล้วค่อยหักครั้งเดียว ปัดขึ้นทีละ 15 นาที (0.25 ชม.)</p>
           <h2 style="margin-top:6px">ภาษีหัก ณ ที่จ่าย (คนที่ไม่มีประกันสังคม)</h2>
           <div class="grid3">
             <label class="fld"><span>เปิดใช้งาน</span><select id="s_whtEnable"><option value="true">หักภาษี</option><option value="false">ไม่หัก</option></select></label>
@@ -2219,14 +2226,15 @@ function askEditEmp(id){
 /* ---------- ตั้งค่า ---------- */
 const SET_KEYS=['companyName','companyAddress','companyPhone','taxId','signerName','signerTitle',
   'hoursPerDay','otMultiplier','pieceRate','pieceUnit','pieceJobName','ssRate','ssMax','ssMode','roundNet',
-  'whtEnable','whtRate','whtIncomeType','whtDocPrefix'];
+  'whtEnable','whtRate','whtIncomeType','whtDocPrefix',
+  'earlyEnable','earlyGrace','earlyCountLunch'];
 async function loadSettings(){
   try{
     const s=await call('getSettings');
     S.settings=s;
     SET_KEYS.forEach(k=>{ const el=$('s_'+k); if(!el) return;
       if(k==='roundNet') el.value = s[k]?'1':'0';
-      else if(k==='whtEnable') el.value = s[k]?'true':'false';
+      else if(k==='whtEnable'||k==='earlyEnable'||k==='earlyCountLunch') el.value = s[k]?'true':'false';
       else el.value = s[k]; });
     $('setHint').textContent='ค่าแรงเหมาดึงจากแท็บ '+s.pieceSheetName+' ของชีตงานบรรจุ'+
       (s.hasPdfFolder?'':' · ยังไม่ได้ตั้งโฟลเดอร์ PDF ในโค้ด จะสร้างสลิปไม่ได้');
@@ -2271,10 +2279,10 @@ function init(){
   $('dailyImport').addEventListener('click',async()=>{
     const d=S.daily;
     if(!await confirmBox('เติมค่าแรงตามวันที่ลงเวลา?',
-        'ระบบจะเติมเฉพาะวันที่มีการลงเวลาจริง คิดครึ่งวันและหักสายให้อัตโนมัติ ช่องที่มีตัวเลขอยู่แล้วจะไม่ถูกทับ',
+        'ระบบจะเติมเฉพาะวันที่มีการลงเวลาจริง คิดครึ่งวัน หักสาย และหักออกก่อนเวลาให้อัตโนมัติ ช่องที่มีตัวเลขอยู่แล้วจะไม่ถูกทับ',
         'เติมเลย','btn navy')) return;
     try{ const r=await call('importAttendance',{id:$('dailyPeriod').value},'กำลังดึงข้อมูล...');
-      toast(r.filled?('เติมให้ '+r.filled+' วัน'+(r.half?' · ครึ่งวัน '+r.half+' วัน':'')+(r.late?' · หักสาย '+r.late+' วัน':'')):'ไม่มีช่องว่างที่ต้องเติม','ok'); await loadDaily(); }
+      toast(r.filled?('เติมให้ '+r.filled+' วัน'+(r.half?' · ครึ่งวัน '+r.half:'')+(r.early?' · ออกก่อน '+r.early:'')+(r.late?' · มีหักเวลา '+r.late+' วัน':'')):'ไม่มีช่องว่างที่ต้องเติม','ok'); await loadDaily(); }
     catch(e){ toast(e.message,'err'); }
   });
 
