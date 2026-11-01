@@ -823,6 +823,8 @@ svg{flex-shrink:0}
             <label class="fld"><span>สูงสุด/เดือน (บาท)</span><input type="number" id="s_ssMax" min="0"></label>
             <label class="fld"><span>หักเมื่อไร</span><select id="s_ssMode"><option value="end">งวดสิ้นเดือนครั้งเดียว</option><option value="each">ทุกงวด งวดละครึ่ง</option></select></label>
           </div>
+          <h2 style="margin-top:6px">วันที่ลงเวลาไม่ครบ</h2>
+          <label class="fld"><span>เช่น ลืมสแกนออกตอนเย็น</span><select id="s_incompleteZero"><option value="true">ให้ค่าแรงเป็น 0 ไว้ก่อน เพื่อให้ตรวจสอบ</option><option value="false">คิดเต็มวันตามปกติ</option></select></label>
           <h2 style="margin-top:6px">หักเงินกรณีออกก่อนเวลา</h2>
           <div class="grid3">
             <label class="fld"><span>เปิดใช้งาน</span><select id="s_earlyEnable"><option value="true">หักเงิน</option><option value="false">ไม่หัก</option></select></label>
@@ -2227,14 +2229,14 @@ function askEditEmp(id){
 const SET_KEYS=['companyName','companyAddress','companyPhone','taxId','signerName','signerTitle',
   'hoursPerDay','otMultiplier','pieceRate','pieceUnit','pieceJobName','ssRate','ssMax','ssMode','roundNet',
   'whtEnable','whtRate','whtIncomeType','whtDocPrefix',
-  'earlyEnable','earlyGrace','earlyCountLunch'];
+  'earlyEnable','earlyGrace','earlyCountLunch','incompleteZero'];
 async function loadSettings(){
   try{
     const s=await call('getSettings');
     S.settings=s;
     SET_KEYS.forEach(k=>{ const el=$('s_'+k); if(!el) return;
       if(k==='roundNet') el.value = s[k]?'1':'0';
-      else if(k==='whtEnable'||k==='earlyEnable'||k==='earlyCountLunch') el.value = s[k]?'true':'false';
+      else if(k==='whtEnable'||k==='earlyEnable'||k==='earlyCountLunch'||k==='incompleteZero') el.value = s[k]?'true':'false';
       else el.value = s[k]; });
     $('setHint').textContent='ค่าแรงเหมาดึงจากแท็บ '+s.pieceSheetName+' ของชีตงานบรรจุ'+
       (s.hasPdfFolder?'':' · ยังไม่ได้ตั้งโฟลเดอร์ PDF ในโค้ด จะสร้างสลิปไม่ได้');
@@ -2282,7 +2284,7 @@ function init(){
         'ระบบจะเติมเฉพาะวันที่มีการลงเวลาจริง คิดครึ่งวัน หักสาย และหักออกก่อนเวลาให้อัตโนมัติ ช่องที่มีตัวเลขอยู่แล้วจะไม่ถูกทับ',
         'เติมเลย','btn navy')) return;
     try{ const r=await call('importAttendance',{id:$('dailyPeriod').value},'กำลังดึงข้อมูล...');
-      toast(r.filled?('เติมให้ '+r.filled+' วัน'+(r.half?' · ครึ่งวัน '+r.half:'')+(r.early?' · ออกก่อน '+r.early:'')+(r.late?' · มีหักเวลา '+r.late+' วัน':'')):'ไม่มีช่องว่างที่ต้องเติม','ok'); await loadDaily(); }
+      toast(r.filled?('เติมให้ '+r.filled+' วัน'+(r.half?' · ครึ่งวัน '+r.half:'')+(r.early?' · ออกก่อน '+r.early:'')+(r.late?' · มีหักเวลา '+r.late+' วัน':'')+(r.incomplete?' · ลงไม่ครบ '+r.incomplete+' วัน (ค่าแรง 0 ต้องตรวจ)':'')):'ไม่มีช่องว่างที่ต้องเติม','ok'); await loadDaily(); }
     catch(e){ toast(e.message,'err'); }
   });
 
